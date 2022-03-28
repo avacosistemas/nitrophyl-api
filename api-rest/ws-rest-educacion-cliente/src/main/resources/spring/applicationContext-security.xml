@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:ctx="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security	 
+      http://www.springframework.org/schema/security/spring-security-4.2.xsd
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+      http://www.springframework.org/schema/context
+	  http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<http entry-point-ref="restAuthenticationEntryPoint">
+<!-- 		<intercept-url pattern="/swagger-ui.html" access="permitAll" /> -->
+
+		<intercept-url pattern="/profesor/miperfil/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/miperfil/*" method="PUT" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/preguntas/*" method="GET" access="permitAll" />
+		<intercept-url pattern="/profesor/responder/*" method="PUT" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/misclases/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/*/detalleclase/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/*/anotaciones/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/*/anotaciones/*" method="PUT" access="isAuthenticated()" />
+		<intercept-url pattern="/profesor/*/alumnos/*" method="GET" access="isAuthenticated()" />
+
+		<intercept-url pattern="/alumno/miperfil/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/miperfil/" method="PUT" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/preguntar/*" method="POST" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/misclases/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/*/detalleclase/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/*/anotaciones/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/*/anotaciones/*" method="POST" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/*/puntuacion/*" method="POST" access="isAuthenticated()" />
+
+		<intercept-url pattern="/alumno/aulasabiertas/*" method="GET" access="isAuthenticated()" />
+		<intercept-url pattern="/alumno/*/aulasabiertassolicitarunirse/*" method="GET" access="isAuthenticated()" />
+		
+		<intercept-url pattern="/**" access="permitAll" />
+		<csrf disabled="true" />
+		<custom-filter before="BASIC_AUTH_FILTER" ref="tokenFilter" />
+		<logout />
+	</http>
+
+	<beans:bean id="tokenFilter" class="ar.com.avaco.ws.rest.security.filter.AuthorizationTokenCheck" />
+
+	<authentication-manager alias="authenticationManager" >
+		<sec:authentication-provider user-service-ref="cacheUserDetailsService">
+			<sec:password-encoder ref="passwordEncoder"/>
+		</sec:authentication-provider>
+	</authentication-manager>
+
+	<ctx:component-scan base-package="ar.com.avaco.ws.rest.security.handler"/>
+	<ctx:component-scan base-package="ar.com.avaco.ws.rest.security" resource-pattern="**/*.class" />
+	
+	<global-method-security pre-post-annotations="enabled" />
+	
+</beans:beans>
