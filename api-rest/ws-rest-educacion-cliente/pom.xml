@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ar.com.avaco.ws.rest</groupId>
-	<artifactId>ws-rest-educacion-cliente</artifactId>
+	<artifactId>ws-rest-nitrophyl-cliente</artifactId>
 	<version>0.1</version>
 	<packaging>war</packaging>
 	
@@ -28,8 +28,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>ar.com.avaco.educacion</groupId>
-			<artifactId>educacion-domain</artifactId>
+			<groupId>ar.com.avaco.nitrophyl</groupId>
+			<artifactId>nitrophyl-domain</artifactId>
 			<version>0.3</version>
 			<scope>compile</scope>
 		</dependency>

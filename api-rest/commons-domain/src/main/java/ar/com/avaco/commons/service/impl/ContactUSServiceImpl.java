@@ -37,10 +37,10 @@ public class ContactUSServiceImpl extends NJBaseService<Long, ContactUS, Contact
 	private static final String CLIENT = "client";
 	private static final String ISO_8859_1 = "ISO-8859-1";
 
-	@Value("Contacto TeachOnline")
+	@Value("Contacto Nitrophyl")
 	private String contactUSSubjetClient;
 
-	@Value("Contacto TeachOnline")
+	@Value("Contacto Nitrophyl")
 	private String contactUSSubjetSystem;
 	
 	@Value("template/contact-us-template-client.html")
@@ -49,7 +49,7 @@ public class ContactUSServiceImpl extends NJBaseService<Long, ContactUS, Contact
 	@Value("template/contact-us-template-system.html")
 	private String contactUSTemplateSystem;
 	
-	@Value("profeteachonline@gmail.com")
+	@Value("nitrophyl@gmail.com")
 	private String contactUSFrom;
 	
 	@Resource(name = "mailSenderSMTPService")

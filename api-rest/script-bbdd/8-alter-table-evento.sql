@@ -1,1 +1,0 @@
-ALTER TABLE aula_eventos ALTER COLUMN fecha TYPE timestamp without time zone;

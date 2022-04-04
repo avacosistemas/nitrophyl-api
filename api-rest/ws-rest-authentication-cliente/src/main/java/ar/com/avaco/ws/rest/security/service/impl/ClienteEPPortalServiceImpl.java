@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.sec.exception.NuclearJSecurityException;
-import ar.com.avaco.educacion.domain.entities.cliente.Cliente;
-import ar.com.avaco.educacion.service.cliente.ClienteService;
+import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
+import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.ws.rest.security.ClienteUserDetailsFactory;
 import ar.com.avaco.ws.rest.security.dto.UpdatePasswordDTO;
 import ar.com.avaco.ws.rest.security.dto.UserAuthorised;

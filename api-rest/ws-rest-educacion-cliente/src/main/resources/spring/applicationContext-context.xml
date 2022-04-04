@@ -18,7 +18,7 @@
 	<component-scan base-package="ar.com.avaco.ws.rest.security" resource-pattern="**/*.class" />
 	<component-scan base-package="ar.com.avaco.ws.controller" resource-pattern="**/*Controller.class" />
 	
-	<component-scan base-package="ar.com.avaco.educacion.ws.controller" resource-pattern="**/*Controller.class" />
+	<component-scan base-package="ar.com.avaco.nitrophyl.ws.controller" resource-pattern="**/*Controller.class" />
 	
 <!-- 	<beans:bean id="swagger2Config" -->
 <!-- 		class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration"> -->
