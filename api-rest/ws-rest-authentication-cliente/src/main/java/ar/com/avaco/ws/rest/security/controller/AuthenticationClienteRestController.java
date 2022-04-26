@@ -46,26 +46,6 @@ public class AuthenticationClienteRestController {
 	@Value("${jwt.header}")
 	private String tokenHeader;
 
-	@Value("${upcn_client_id}")
-	private String upcnClientId;
-
-	@Value("${upcn_client_secret}")
-	private String upcnClientSecret;
-
-	@Value("${upcn_uri_callback}")
-	private String upcnUriCallBack;
-
-	@Value("${upcn_url}")
-	private String upcnUrl;
-
-	@Value("${upcn_jwk_url}")
-	private String upcnJwkYUrl;
-
-	@Value("${upcn_institucion_id}")
-	private String upcnInstitucionId;
-
-	static final String UPCN_USERNAME_PREFIX = "user_upcn_";
-
 	private AuthenticationManager authenticationManager;
 
 	private JwtTokenUtil jwtTokenUtil;
@@ -85,90 +65,6 @@ public class AuthenticationClienteRestController {
 
 		// Reload password post-security so we can generate the token
 		final UserDetails userDetails = clienteEPService.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
-
-		// Return the token
-		return ResponseEntity.ok(new JwtAuthenticationResponse(token));
-	}
-
-	@RequestMapping(value = "/authUpcn", method = RequestMethod.GET)
-	public ResponseEntity<?> createAuthenticationTokenFromUPCN(HttpServletRequest request)
-			throws AuthenticationException {
-
-		logger.info("Entrando a authUpcn");
-
-		String code = (String) request.getParameter("code");
-
-		String id_usuario = null;
-		String username = null;
-		String access_token = null;
-		String id_token = null;
-
-		if (code != null) {
-			logger.debug("Code: " + code);
-			String parameters = "grant_type=authorization_code&code=" + HttpUtil.urlEncode(code) + "&client_id="
-					+ HttpUtil.urlEncode(upcnClientId) + "&client_secret=" + HttpUtil.urlEncode(upcnClientSecret)
-					+ "&redirect_uri=" + HttpUtil.urlEncode(upcnUriCallBack);
-			logger.debug("Request POST url: " + upcnUrl + "/token   - parametros:" + parameters);
-			String response = HttpUtil.postURL(upcnUrl + "/token", parameters, "application/x-www-form-urlencoded");
-			if (response != null) {
-				logger.debug("Response POST: " + response);
-				JsonObject jsonObject = (JsonObject) new JsonParser().parse(response);
-				access_token = jsonObject.get("access_token") != null ? jsonObject.get("access_token").getAsString()
-						: null;
-				id_token = jsonObject.get("id_token") != null ? jsonObject.get("id_token").getAsString() : null;
-				id_usuario = jwtTokenUtil.getUsernameFromTokenWithJwk(id_token, upcnJwkYUrl);
-				username = UPCN_USERNAME_PREFIX + id_usuario;
-			} else {
-				logger.error("Response POST es NULL");
-				throw new AuthenticationException("Error de Autenticacion contra UPCN", null);
-			}
-		} else {
-			logger.error("Code es NULL");
-			throw new AuthenticationException("Error de Autenticacion contra UPCN", null);
-		}
-
-		UserDetails userDetails = null;
-
-		// Reload password post-security so we can generate the token
-		try {
-			userDetails = clienteEPService.loadUserByUsername(username);
-		} catch (UsernameNotFoundException usernameNotFoundException) {
-			logger.debug("Creando usuario: " + username);
-			String authorization = "Bearer " + access_token;
-			logger.debug("REQUEST: " + upcnUrl + "/me con accesstoken" + access_token);
-			String response = HttpUtil.getURL(upcnUrl + "/me", authorization);
-			if (response != null) {
-				logger.debug("RESPONSE: " + response);
-				JsonObject jsonObject = (JsonObject) new JsonParser().parse(response);
-				String nombreCompleto = jsonObject.get("nombre_completo") != null
-						? jsonObject.get("nombre_completo").getAsString()
-						: null;
-				String cuil = jsonObject.get("cuil") != null ? jsonObject.get("cuil").getAsString() : null;
-				String email = jsonObject.get("email") != null ? jsonObject.get("email").getAsString() : null;
-				String telefonoFijo = !(jsonObject.get("telefono_fijo") instanceof JsonNull)
-						? jsonObject.get("telefono_fijo").getAsString()
-						: null;
-				String telefonoMovil = !(jsonObject.get("telefono_movil") instanceof JsonNull)
-						? jsonObject.get("telefono_movil").getAsString()
-						: null;
-
-				Identificacion identificacion = new Identificacion();
-				identificacion.setNumero(cuil.substring(2, 10));
-				identificacion.setTipo(TipoIdentificacion.DNI);
-
-				Contacto contacto = new Contacto();
-				contacto.setTelefonoFijo(telefonoFijo);
-				contacto.setTelefonoMovil(telefonoMovil);
-
-				userDetails = clienteEPService.loadUserByUsername(username);
-
-			} else {
-				logger.error("RESPONSE es NULL");
-				throw new AuthenticationException("Error de Autenticacion contra UPCN", null);
-			}
-		}
-
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		// Return the token
