@@ -13,6 +13,7 @@
 
 	<ctx:component-scan base-package="ar.com.avaco.nitrophyl.repository" resource-pattern="**/*RepositoryImpl.class"/>
 	<ctx:component-scan base-package="ar.com.avaco.nitrophyl.service" resource-pattern="**/*ServiceImpl.class"/>
+	<ctx:component-scan base-package="ar.com.avaco.nitrophyl.ws.service" resource-pattern="**/*ServiceImpl.class"/>									  
 
 	<ctx:component-scan base-package="ar.com.avaco.commons.repository" resource-pattern="**/*RepositoryImpl.class"/>
 	<ctx:component-scan base-package="ar.com.avaco.commons.service" resource-pattern="**/*ServiceImpl.class"/>

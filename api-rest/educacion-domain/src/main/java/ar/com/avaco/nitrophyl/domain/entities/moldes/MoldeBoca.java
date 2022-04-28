@@ -29,8 +29,11 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "ID_MOLDE")
+	@JoinColumn(name = "ID_MOLDE", insertable = false, updatable = false)
 	private Molde molde;
+
+	@Column(name = "ID_MOLDE")
+	private Long idMolde;
 
 	@Column(name = "NROBOCA", unique = false, nullable = false)
 	private Integer nroBoca;
@@ -72,6 +75,14 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
+	}
+
+	public Long getIdMolde() {
+		return idMolde;
+	}
+
+	public void setIdMolde(Long idMolde) {
+		this.idMolde = idMolde;
 	}
 
 }

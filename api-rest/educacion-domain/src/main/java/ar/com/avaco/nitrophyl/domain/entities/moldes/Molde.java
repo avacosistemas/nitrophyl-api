@@ -1,8 +1,5 @@
 package ar.com.avaco.nitrophyl.domain.entities.moldes;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -48,11 +44,11 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
 
-	@OneToMany(orphanRemoval = true, mappedBy = "molde", cascade = CascadeType.ALL)
-	private List<MoldeBoca> moldeBocas;
-
-	@OneToMany(orphanRemoval = true, mappedBy = "molde", cascade = CascadeType.ALL)
-	private List<MoldeDimension> moldesDimension;
+//	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL)
+//	private List<MoldeBoca> moldeBocas;
+//
+//	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL)
+//	private List<MoldeDimension> moldesDimension;
 
 	public Molde() {
 		super();
@@ -114,20 +110,20 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.id = id;
 	}
 
-	public List<MoldeBoca> getMoldeBocas() {
-		return moldeBocas;
-	}
-
-	public void setMoldeBocas(List<MoldeBoca> moldeBocas) {
-		this.moldeBocas = moldeBocas;
-	}
-
-	public List<MoldeDimension> getMoldesDimension() {
-		return moldesDimension;
-	}
-
-	public void setMoldesDimension(List<MoldeDimension> moldesDimension) {
-		this.moldesDimension = moldesDimension;
-	}
+//	public List<MoldeBoca> getMoldeBocas() {
+//		return moldeBocas;
+//	}
+//
+//	public void setMoldeBocas(List<MoldeBoca> moldeBocas) {
+//		this.moldeBocas = moldeBocas;
+//	}
+//
+//	public List<MoldeDimension> getMoldesDimension() {
+//		return moldesDimension;
+//	}
+//
+//	public void setMoldesDimension(List<MoldeDimension> moldesDimension) {
+//		this.moldesDimension = moldesDimension;
+//	}
 
 }

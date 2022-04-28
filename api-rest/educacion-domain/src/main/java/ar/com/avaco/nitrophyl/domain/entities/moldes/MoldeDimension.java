@@ -31,8 +31,12 @@ public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "ID_MOLDE")
+	@JoinColumn(name = "ID_MOLDE", insertable = false, updatable = false)
 	private Molde molde;
+	
+	@Column(name = "ID_MOLDE")
+	private Long idMolde;
+	
 
 	@Column(name = "TIPODIMENSION")
 	@Enumerated(EnumType.STRING)
@@ -75,6 +79,14 @@ public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setValordimension(Integer valordimension) {
 		this.valordimension = valordimension;
+	}
+
+	public Long getIdMolde() {
+		return idMolde;
+	}
+
+	public void setIdMolde(Long idMolde) {
+		this.idMolde = idMolde;
 	}
 
 }

@@ -17,6 +17,7 @@
 		<intercept-url pattern="/auth/**" access="permitAll" />
 		<intercept-url pattern="/password/**" access="permitAll" />
 		<intercept-url pattern="/auth/reset-password" access="isAuthenticated()" />
+		<intercept-url pattern="/molde/**" access="isAuthenticated()" />
 		<intercept-url pattern="/**" access="permitAll" />
 		<csrf disabled="true" />
 		<custom-filter after="BASIC_AUTH_FILTER" ref="tokenFilter" />
