@@ -50,4 +50,7 @@ public interface UsuarioService extends NJService<Long, Usuario> {
 	
 	boolean isUserExistWithEmail(String email);
 	
+	Usuario findByUsername(String username);
+	
 }
+

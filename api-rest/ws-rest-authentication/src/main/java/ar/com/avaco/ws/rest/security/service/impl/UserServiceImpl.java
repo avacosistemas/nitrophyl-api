@@ -120,5 +120,11 @@ public class UserServiceImpl extends AbstractConvertService<User, Long, Usuario>
 			throw new ErrorValidationException("Se han encontrado errores de negocio en el objeto analizado", errores);
 		}
 	}
+
+
+	@Override
+	public User getByUsername(String username) {
+		return convertToDto(getService().findByUsername(username));
+	}
 	
 }

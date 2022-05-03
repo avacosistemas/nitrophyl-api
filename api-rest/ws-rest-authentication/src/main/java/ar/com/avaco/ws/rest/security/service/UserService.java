@@ -17,4 +17,5 @@ public interface UserService extends ConvertService<User, Long, Usuario>{
 	void updatePassword(UpdatePasswordDTO resetPassword);
 	void updateValidation(User user) throws ErrorValidationException;
 	User saveUser(User user) throws ErrorValidationException;
+	User getByUsername(String username);
 }

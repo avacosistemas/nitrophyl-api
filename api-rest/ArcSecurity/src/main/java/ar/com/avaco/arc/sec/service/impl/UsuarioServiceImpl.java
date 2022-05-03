@@ -50,7 +50,7 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 			throw new NuclearJSecurityException(USER_CURRENT_PASSWORD_INVALID);
 		} else if (password.equals(newPassword)) {
 			throw new NuclearJSecurityException(USER_NEWPASSWORD_EQUALS_CURRENT);
-		}		
+		}
 		user.setPassword(passwordEncoder.encode(newPassword));
 		user.setFechaAltaPassword(Calendar.getInstance().getTime());
 		user.setRequiereCambioPassword(Boolean.FALSE);
@@ -75,7 +75,7 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 		usuario.setPassword(passwordEncoder.encode(tmppass));
 
 		usuario = getRepository().save(usuario);
-		
+
 		if (mailSenderSMTPService != null) {
 			notifyPasswordNewUser(usuario, tmppass);
 		}
@@ -91,13 +91,13 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 		}
 		String mail = usuario.getEmail();
 		Usuario userByMail = getRepository().findByEmail(mail);
-		if (userByMail  != null) {
+		if (userByMail != null) {
 			errors.put("email", "Ya existe un usuario registrado con ese Email.");
 		}
 		if (!errors.isEmpty()) {
 			throw new ErrorValidationException("Se han encontrado los siguientes errores", errors);
 		}
-		
+
 	}
 
 	/**
@@ -112,11 +112,7 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario findByUsername = getRepository().findByUsername(username);
-		if (findByUsername == null) {
-			throw new UsernameNotFoundException("Usuario " + username + "not found");
-		}
-		return findByUsername;
+		return findByUsername(username);
 	}
 
 	@Override
@@ -140,14 +136,14 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 	@Override
 	public void sendMissingPasswordById(Long id) {
 		Usuario user = getRepository().findOne(id);
-		
+
 		if (user != null) {
 			generateNewPassword(user);
 		} else {
 			throw new UsernameNotFoundException("No se ha podido identificar al usuario");
 		}
 	}
-	
+
 	@Override
 	public List<Usuario> getExternalUsersLike(String userLess, String userLike) {
 		return getRepository().getExternalUsersLike(userLess, userLike);
@@ -169,8 +165,8 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 
 	private void notifyPasswordNewUser(Usuario user, String tmpass) {
 		String subject = "Nitrophyl Admin";
-		StringBuilder msg = new StringBuilder("¡Bienvenido "); 
-		msg.append(user.getNombreApellido()); 
+		StringBuilder msg = new StringBuilder("¡Bienvenido ");
+		msg.append(user.getNombreApellido());
 		msg.append(" a Nitrophyl Admin! <br>");
 		msg.append("Se le ha asignado una contraseña temporal a su usuario ");
 		msg.append(user.getUsername());
@@ -181,11 +177,10 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 		mailSenderSMTPService.sendMail(FROM, user.getEmail(), subject.toString(), msg.toString(), null);
 	}
 
-	
 	private void notifyPassword(Usuario user, String tmppas) {
 		String subject = "Nitrophyl Admin";
-		StringBuilder msg = new StringBuilder("Estimado "); 
-		msg.append(user.getNombreApellido()); 
+		StringBuilder msg = new StringBuilder("Estimado ");
+		msg.append(user.getNombreApellido());
 		msg.append("<br>Se le ha asignado una contraseña temporal a su usuario ");
 		msg.append(user.getUsername());
 		msg.append(".<br>");
@@ -224,8 +219,9 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 	}
 
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;		
+		this.passwordEncoder = passwordEncoder;
 	}
+
 	@Resource(name = "usuarioRepository")
 	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
 		this.repository = usuarioRepository;
@@ -236,5 +232,13 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 		return getRepository().isUserExistWithEmail(email);
 	}
 
+	@Override
+	public Usuario findByUsername(String username) {
+		Usuario user = getRepository().findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("Usuario " + username + "not found");
+		}
+		return user;
+	}
 
 }
