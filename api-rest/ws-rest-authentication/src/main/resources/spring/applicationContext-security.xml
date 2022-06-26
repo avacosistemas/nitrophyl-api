@@ -17,7 +17,8 @@
 		<intercept-url pattern="/auth/**" access="permitAll" />
 		<intercept-url pattern="/password/**" access="permitAll" />
 		<intercept-url pattern="/auth/reset-password" access="isAuthenticated()" />
-		<intercept-url pattern="/molde/**" access="isAuthenticated()" />
+		<intercept-url pattern="/piezas/**" access="hasAuthority('PERMISO_PIEZAS')" />		
+		<intercept-url pattern="/molde/**" access="hasAuthority('PERMISO_MOLDES')" />
 		<intercept-url pattern="/**" access="permitAll" />
 		<csrf disabled="true" />
 		<custom-filter after="BASIC_AUTH_FILTER" ref="tokenFilter" />
@@ -37,6 +38,8 @@
 
 	<ctx:component-scan
 		base-package="ar.com.avaco.ws.rest.security.controller" />
+	<ctx:component-scan
+		base-package="ar.com.avaco.ws.rest.controller" />
 	<ctx:component-scan
 		base-package="ar.com.avaco.ws.rest.security.handler" />
 	<ctx:component-scan

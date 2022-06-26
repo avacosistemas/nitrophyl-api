@@ -18,7 +18,6 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
-import ar.com.avaco.ws.rest.security.service.ProfileService;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Service("moldeEPService")

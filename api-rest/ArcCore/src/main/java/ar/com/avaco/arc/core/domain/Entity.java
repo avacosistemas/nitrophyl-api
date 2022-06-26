@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.Hibernate;
+
 /**
  * Default abstract class that represents a unique and independent domain
  * object.<br>
@@ -61,7 +63,7 @@ public abstract class Entity<ID extends Serializable> implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (Hibernate.getClass(this) != Hibernate.getClass(obj)) 
 			return false;
 		Entity<ID> other = (Entity<ID>) obj;
 		if (getId() == null) {

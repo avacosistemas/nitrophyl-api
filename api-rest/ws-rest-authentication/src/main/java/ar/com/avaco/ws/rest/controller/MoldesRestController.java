@@ -1,11 +1,9 @@
-package ar.com.avaco.ws.rest.security.controller;
+package ar.com.avaco.ws.rest.controller;
 
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.postgresql.util.PSQLException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +19,6 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
-import ar.com.avaco.ws.rest.controller.AbstractDTORestController;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController

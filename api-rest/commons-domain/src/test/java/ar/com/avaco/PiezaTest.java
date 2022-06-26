@@ -10,9 +10,9 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
-import ar.com.avaco.commons.domain.Pieza;
-import ar.com.avaco.commons.domain.PiezaCompuesta;
-import ar.com.avaco.commons.domain.PiezaSimple;
+import ar.com.avaco.nitrophyl.domain.entities.Pieza;
+import ar.com.avaco.nitrophyl.domain.entities.PiezaCompuesta;
+import ar.com.avaco.nitrophyl.domain.entities.PiezaSimple;
 
 public class PiezaTest {
 
