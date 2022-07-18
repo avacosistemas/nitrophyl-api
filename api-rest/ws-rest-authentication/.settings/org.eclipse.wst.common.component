@@ -10,6 +10,9 @@
         <dependent-module archiveName="ws-rest-commons-0.3.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ws-rest-commons/ws-rest-commons">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="nitrophyl-domain-0.3.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nitrophyl-domain/nitrophyl-domain">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="ArcSecurity-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ArcSecurity/ArcSecurity">
             <dependency-type>uses</dependency-type>
         </dependent-module>
