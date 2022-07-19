@@ -29,6 +29,8 @@ INSERT INTO public.seg_permiso (id_seg_permiso, activo, codigo, descripcion) VAL
 INSERT INTO public.seg_permiso (id_seg_permiso, activo, codigo, descripcion) VALUES (39,true,'FAQ_DELETE','');
 INSERT INTO public.seg_permiso (id_seg_permiso, activo, codigo, descripcion) VALUES (40,true,'FAQ_READ','');
 INSERT INTO public.seg_permiso (id_seg_permiso, activo, codigo, descripcion) VALUES (41,true,'FAQ_MODIFY','');
+INSERT INTO public.seg_permiso (id_seg_permiso, activo, codigo, descripcion) VALUES (42,true,'PERMISO_MOLDES','');
+INSERT INTO public.seg_permiso (id_seg_permiso, activo, codigo, descripcion) VALUES (43,true,'PERMISO_PIEZAS','');
 
 -- Dejar solo uno
 INSERT INTO public.seg_rol (id_seg_rol, codigo, nombre, super_rol) VALUES (2, 'ADM', 'Administrador', true);
@@ -65,6 +67,8 @@ INSERT INTO public.seg_perfil_permiso (id_seg_perfil, id_seg_permiso) VALUES (1,
 INSERT INTO public.seg_perfil_permiso (id_seg_perfil, id_seg_permiso) VALUES (1, 39);
 INSERT INTO public.seg_perfil_permiso (id_seg_perfil, id_seg_permiso) VALUES (1, 40);
 INSERT INTO public.seg_perfil_permiso (id_seg_perfil, id_seg_permiso) VALUES (1, 41);
+INSERT INTO public.seg_perfil_permiso (id_seg_perfil, id_seg_permiso) VALUES (1, 42);
+INSERT INTO public.seg_perfil_permiso (id_seg_perfil, id_seg_permiso) VALUES (1, 43);
 
 
 -- Usuarios -- password encriptada=beto
