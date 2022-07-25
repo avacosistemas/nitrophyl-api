@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,17 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 		this.repository = piezaRepository;
 	}
 
+	@Override
+	public Pieza get(Long id) {
+		// TODO Auto-generated method stub
+		Pieza pieza = super.get(id);
+		if (pieza.isCompuesta()) {
+			Hibernate.initialize(pieza.getPiezas());
+			pieza.getPiezas();
+		}
+		return pieza;
+	}
+	
 	@Override
 	public Pieza addPiezaToCompuesta(Long id, Long idPieza) {
 		Pieza toAdd = repository.getOne(idPieza);

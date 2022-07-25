@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCompuesta;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaSimple;
@@ -79,6 +80,43 @@ public class PiezaEPServiceImpl extends CRUDEPBaseService<Long, PiezaDTO, Pieza,
 	}
 
 	@Override
+	public List<PiezaDTO> listFilter(AbstractFilter abstractFilter) {
+		List<Pieza> entities = service.listFilter(abstractFilter);
+		List<PiezaDTO> dtos = convertPiezasSinHijos(entities);
+		return dtos;
+	}
+	
+	
+	
+	@Override
+	public List<PiezaDTO> list() {
+		List<Pieza> entities = service.list();
+		List<PiezaDTO> dtos = convertPiezasSinHijos(entities);
+		return dtos;
+	}
+	
+	@Override
+	public PiezaDTO get(Long id) {
+		Pieza pieza = service.get(id);
+		return convertToDto(pieza);
+	}
+	
+	private List<PiezaDTO> convertPiezasSinHijos(List<Pieza> entities) {
+		List<PiezaDTO> list = new ArrayList<>();
+		for (Pieza entity : entities) {
+			PiezaDTO piezaDTO = new PiezaDTO();
+			piezaDTO.setCodigoInterno(entity.getCodigoInterno());
+			piezaDTO.setCodigoPieza(entity.getCodigoPieza());
+			piezaDTO.setId(entity.getId());
+			piezaDTO.setNombre(entity.getNombre());
+			piezaDTO.setTipo(entity.getTipo());
+			piezaDTO.setEsProducto(entity.getEsProducto());
+			list.add(piezaDTO);
+		}
+		return list;
+	}
+
+	@Override
 	@Resource(name = "piezaService")
 	protected void setService(PiezaService service) {
 		this.service = service;
@@ -92,6 +130,18 @@ public class PiezaEPServiceImpl extends CRUDEPBaseService<Long, PiezaDTO, Pieza,
 
 	@Override
 	public PiezaDTO removePiezaFromCompuesta(Long id, Long idPieza) {
+		Pieza saved = service.removePiezaFromCompuesta(id, idPieza);
+		return convertToDto(saved);
+	}
+
+	@Override
+	public PiezaDTO addPiezaToProductoCompuesto(Long id, Long idPieza) {
+		Pieza saved = service.addPiezaToCompuesta(id, idPieza);
+		return convertToDto(saved);
+	}
+
+	@Override
+	public PiezaDTO removePiezaFromProductoCompuesto(Long id, Long idPieza) {
 		Pieza saved = service.removePiezaFromCompuesta(id, idPieza);
 		return convertToDto(saved);
 	}

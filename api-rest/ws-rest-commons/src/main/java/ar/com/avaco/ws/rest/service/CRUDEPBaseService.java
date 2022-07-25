@@ -59,7 +59,6 @@ public abstract class CRUDEPBaseService<ID extends Serializable, DTO extends DTO
 		List<T> entities = service.list();
 		List<DTO> dtos = convertToDtos(entities);
 		return dtos;
-		
 	}
 
 	@Override
