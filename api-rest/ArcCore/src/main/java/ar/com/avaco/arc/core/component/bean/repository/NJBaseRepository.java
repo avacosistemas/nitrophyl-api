@@ -50,6 +50,9 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 		applyFilters(criteria, abstractFilter);
 		applyPagination(criteria, abstractFilter);
 		applyOrdering(criteria, abstractFilter);
+		if (abstractFilter.getDistinctRootEntity() != null && abstractFilter.getDistinctRootEntity().booleanValue()) {
+			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		}
 		return criteria.list();
 	}
 

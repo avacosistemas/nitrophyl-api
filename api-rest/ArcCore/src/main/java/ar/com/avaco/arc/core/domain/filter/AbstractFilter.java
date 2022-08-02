@@ -12,6 +12,8 @@ public abstract class AbstractFilter {
 	private Boolean asc;
 
 	private String idx;
+	
+	private Boolean distinctRootEntity;
 
 	public List<FilterData> getFilterDatas() {
 		return new ArrayList<FilterData>();
@@ -60,4 +62,13 @@ public abstract class AbstractFilter {
 	public void setIdx(String idx) {
 		this.idx = idx;
 	}
+
+	public Boolean getDistinctRootEntity() {
+		return distinctRootEntity;
+	}
+
+	public void setDistinctRootEntity(Boolean distinctRootEntity) {
+		this.distinctRootEntity = distinctRootEntity;
+	}
+	
 }

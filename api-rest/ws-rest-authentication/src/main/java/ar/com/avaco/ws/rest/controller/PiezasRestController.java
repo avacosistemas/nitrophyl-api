@@ -29,6 +29,13 @@ public class PiezasRestController extends AbstractDTORestController<PiezaDTO, Lo
 
 	/* EP Piezas */
 
+	@Override
+	@RequestMapping(value = "/piezas/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> list() {
+		// TODO Auto-generated method stub
+		return super.list();
+	}
+	
 	@RequestMapping(value = "/piezas/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getPieza(@PathVariable("id") Long id) throws Exception {
 		return super.get(id);

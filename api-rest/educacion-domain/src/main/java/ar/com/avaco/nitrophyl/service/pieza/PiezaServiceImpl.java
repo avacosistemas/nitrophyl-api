@@ -29,6 +29,11 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 	}
 
 	@Override
+	public List<Pieza> list() {
+		return getRepository().findAll();
+	}
+	
+	@Override
 	public Pieza get(Long id) {
 		// TODO Auto-generated method stub
 		Pieza pieza = super.get(id);

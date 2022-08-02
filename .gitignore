@@ -80,3 +80,9 @@ api-rest/ArcCore/.settings/org.eclipse.m2e.core.prefs
 api-rest/ArcCore/.settings/org.eclipse.jdt.core.prefs
 api-rest/ArcCore/.project
 api-rest/ArcCore/.classpath
+/api-rest/ArcCore/.settings/org.eclipse.wst.validation.prefs
+/api-rest/ArcSecurity/.settings/org.eclipse.wst.validation.prefs
+/api-rest/commons-domain/.settings/org.eclipse.wst.validation.prefs
+/api-rest/educacion-domain/.settings/org.eclipse.wst.validation.prefs
+/api-rest/ws-rest-commons/.settings/org.eclipse.wst.validation.prefs
+/api-rest/ws-rest-security/.settings/org.eclipse.wst.validation.prefs

@@ -28,9 +28,10 @@ public class ProductosRestController extends AbstractDTORestController<PiezaDTO,
 		super.service = piezaEPService;
 	}
 
-	@RequestMapping(value = "/productos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/productos/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> listProductos() throws Exception {
 		PiezaFilter filter = new PiezaFilter();
+		filter.setDistinctRootEntity(true);
 		filter.setEsProducto(Boolean.TRUE);
 		List<PiezaDTO> listFilter = super.service.listFilter(filter);
 		JSONResponse response = new JSONResponse();
