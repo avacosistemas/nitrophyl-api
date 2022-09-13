@@ -9,7 +9,7 @@ public class MoldeDTO extends DTOEntity<Long> {
 
 	private Long id;
 	private String codigo;
-	private Boolean estado;
+	private String estado;
 	private String nombre;
 	private String ubicacion;
 	private String observaciones;
@@ -30,11 +30,11 @@ public class MoldeDTO extends DTOEntity<Long> {
 		this.codigo = codigo;
 	}
 
-	public Boolean getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Boolean estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 

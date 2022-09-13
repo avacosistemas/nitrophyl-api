@@ -2,6 +2,8 @@ package ar.com.avaco.nitrophyl.domain.entities.moldes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,8 +40,12 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "NROBOCA", unique = false, nullable = false)
 	private Integer nroBoca;
 
+	@Column(name = "DESCRIPCION", unique = false, nullable = false)
+	private String descripcion;
+
 	@Column(name = "ESTADO", unique = false, nullable = false)
-	private Boolean estado;
+	@Enumerated(EnumType.STRING)
+	private EstadoBoca estado;
 
 	public MoldeBoca() {
 		super();
@@ -69,11 +75,11 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.nroBoca = nroBoca;
 	}
 
-	public Boolean getEstado() {
+	public EstadoBoca getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Boolean estado) {
+	public void setEstado(EstadoBoca estado) {
 		this.estado = estado;
 	}
 
@@ -83,6 +89,14 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setIdMolde(Long idMolde) {
 		this.idMolde = idMolde;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

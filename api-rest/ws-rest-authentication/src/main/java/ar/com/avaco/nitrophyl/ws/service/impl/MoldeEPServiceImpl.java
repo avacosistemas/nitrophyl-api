@@ -7,16 +7,22 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoBoca;
+import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeBoca;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeDimension;
+import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeRegistro;
+import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoRegistroMolde;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeDimensionService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
+import ar.com.avaco.nitrophyl.service.molde.MoldeRegistroService;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
@@ -30,11 +36,14 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 	@Resource(name = "moldeBocaService")
 	private MoldeBocaService moldeBocaService;
 	
+	@Resource(name = "moldeRegistroService")
+	private MoldeRegistroService moldeRegistroService;
+	
 	@Override
 	protected Molde convertToEntity(MoldeDTO dto) {
 		Molde molde = new Molde();
 		molde.setCodigo(dto.getCodigo());
-		molde.setEstado(dto.getEstado());
+		molde.setEstado(EstadoMolde.valueOf(dto.getEstado()));
 		molde.setId(dto.getId());
 		molde.setNombre(dto.getNombre());
 		molde.setObservaciones(dto.getObservaciones());
@@ -46,7 +55,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 	protected MoldeDTO convertToDto(Molde entity) {
 		MoldeDTO moldeDto = new MoldeDTO();
 		moldeDto.setCodigo(entity.getCodigo());
-		moldeDto.setEstado(entity.getEstado());
+		moldeDto.setEstado(entity.getEstado().toString());
 		moldeDto.setId(entity.getId());
 		moldeDto.setNombre(entity.getNombre());
 		moldeDto.setObservaciones(entity.getObservaciones());
@@ -73,7 +82,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			for (Molde molde : listado) {
 				MoldeListadoDTO dto = new MoldeListadoDTO();
 				dto.setCodigo(molde.getCodigo());
-				dto.setEstado(molde.getEstado());
+				dto.setEstado(molde.getEstado().toString());
 				dto.setNombre(molde.getNombre());
 				dto.setId(molde.getId());
 				returnedList.add(dto);
@@ -90,8 +99,9 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			List<MoldeBocaListadoDTO> returnedListado=new ArrayList<MoldeBocaListadoDTO>();	
 			for (MoldeBoca moldeBoca: listado) {
 				MoldeBocaListadoDTO moldeBocaListadoDTO = new MoldeBocaListadoDTO();
-				moldeBocaListadoDTO.setEstado(moldeBoca.getEstado());
+				moldeBocaListadoDTO.setEstado(moldeBoca.getEstado().toString());
 				moldeBocaListadoDTO.setNroBoca(moldeBoca.getNroBoca());
+				moldeBocaListadoDTO.setDescripcion(moldeBoca.getDescripcion());
 				returnedListado.add(moldeBocaListadoDTO);								
 			}
 			return returnedListado;
@@ -108,9 +118,10 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			
 			for (MoldeBocaListadoDTO dto: moldeBocaListadoDTO) {
 				MoldeBoca moldeBoca = new MoldeBoca();
-				moldeBoca.setEstado(dto.getEstado());
+				moldeBoca.setEstado(EstadoBoca.valueOf(dto.getEstado()));
 				moldeBoca.setNroBoca(dto.getNroBoca());
 				moldeBoca.setIdMolde(idMolde);
+				moldeBoca.setDescripcion(dto.getDescripcion());
 				listado.add(moldeBoca);
 			}
 			
@@ -165,4 +176,27 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		return null;
 	}
 
+	@Override
+	public List<MoldeRegistroDTO> getMoldesRegistro(Long idMolde) {
+		List<MoldeRegistro> list = moldeRegistroService.listByMoldeId(idMolde);
+		List<MoldeRegistroDTO> ret = new ArrayList<>();
+		list.forEach(mr -> ret.add(new MoldeRegistroDTO(mr)));
+		return ret;
+	}
+
+	@Override
+	public MoldeRegistroDTO saveMoldeRegistro(MoldeRegistroDTO moldeRegistroDTO) {
+		
+		MoldeRegistro mr = moldeRegistroService.getUltimoRegistro(moldeRegistroDTO.getIdMolde());
+		MoldeRegistro nmr; 
+		if (mr == null || (mr != null && mr.getTipoRegistro().equals(TipoRegistroMolde.EGRESO))) {
+			nmr = moldeRegistroService.registrarIngreso(moldeRegistroDTO.getComentarios(), moldeRegistroDTO.getIdMolde());	
+		} else {
+			nmr = moldeRegistroService.registrarEgreso(moldeRegistroDTO.getComentarios(), moldeRegistroDTO.getIdMolde());
+		}
+		return new MoldeRegistroDTO(nmr);
+	}
+
+	
+	
 }

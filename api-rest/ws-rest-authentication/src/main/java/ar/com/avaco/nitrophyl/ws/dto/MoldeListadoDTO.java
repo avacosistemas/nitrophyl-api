@@ -7,7 +7,7 @@ public class MoldeListadoDTO {
 	
 	private Long id;
 	private String codigo;
-	private Boolean estado;
+	private String estado;
 	private String nombre;
 
 	public String getCodigo() {
@@ -18,11 +18,11 @@ public class MoldeListadoDTO {
 		this.codigo = codigo;
 	}
 
-	public Boolean getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Boolean estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 

@@ -2,6 +2,8 @@ package ar.com.avaco.nitrophyl.domain.entities.moldes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +18,6 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "MOLDES_SEQ", sequenceName = "MOLDES_SEQ", allocationSize = 1)
 public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -30,7 +29,8 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	private String codigo;
 
 	@Column(name = "ESTADO", unique = false, nullable = false)
-	private Boolean estado;
+	@Enumerated(EnumType.STRING)
+	private EstadoMolde estado;
 
 	@Column(name = "NOMBRE", unique = false, nullable = false)
 	private String nombre;
@@ -44,12 +44,6 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
 
-//	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL)
-//	private List<MoldeBoca> moldeBocas;
-//
-//	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL)
-//	private List<MoldeDimension> moldesDimension;
-
 	public Molde() {
 		super();
 	}
@@ -62,11 +56,11 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.codigo = codigo;
 	}
 
-	public Boolean getEstado() {
+	public EstadoMolde getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Boolean estado) {
+	public void setEstado(EstadoMolde estado) {
 		this.estado = estado;
 	}
 
@@ -109,21 +103,5 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-//	public List<MoldeBoca> getMoldeBocas() {
-//		return moldeBocas;
-//	}
-//
-//	public void setMoldeBocas(List<MoldeBoca> moldeBocas) {
-//		this.moldeBocas = moldeBocas;
-//	}
-//
-//	public List<MoldeDimension> getMoldesDimension() {
-//		return moldesDimension;
-//	}
-//
-//	public void setMoldesDimension(List<MoldeDimension> moldesDimension) {
-//		this.moldesDimension = moldesDimension;
-//	}
 
 }

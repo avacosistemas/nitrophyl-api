@@ -18,6 +18,7 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
@@ -114,4 +115,23 @@ public class MoldesRestController extends AbstractDTORestController<MoldeDTO, Lo
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/molde/registro/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> getMoldeRegistro(@PathVariable("idMolde") Long idMolde) throws Exception {
+		List<MoldeRegistroDTO> moldeRegistroDTOs = this.service.getMoldesRegistro(idMolde);
+		JSONResponse response = new JSONResponse();
+		response.setData(moldeRegistroDTOs);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/molde/registro/{idMolde}", method = RequestMethod.POST)
+	public ResponseEntity<JSONResponse> addMoldeRegistro(@RequestBody MoldeRegistroDTO moldeRegistroDTO) throws Exception {
+		MoldeRegistroDTO saved = this.service.saveMoldeRegistro(moldeRegistroDTO);
+		JSONResponse response = new JSONResponse();
+		response.setData(saved);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
 }

@@ -158,21 +158,20 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> implement
 	@Column(name = "FECHA_REGISTRO", nullable = false, updatable = false)
 	private Date fechaRegistro;
 
-	@Column (name = "TIPO_CLIENTE")
+	@Column(name = "TIPO_CLIENTE")
 	@Enumerated(EnumType.STRING)
 	private TipoCliente tipoCliente;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_ACCESOS")
 	private AccesosCliente accesos;
 
 	@Column(name = "SISTEMA_EXTERNO")
 	private Boolean sistemaExterno;
-	
+
 	@Column(name = "ID_SISTEMA_EXTERNO")
 	private String IdSistemaExterno;
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -385,7 +384,7 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> implement
 	}
 
 	public boolean isSistemaExterno() {
-		return sistemaExterno==null?false:sistemaExterno.booleanValue();
+		return sistemaExterno == null ? false : sistemaExterno.booleanValue();
 	}
 
 	public void setSistemaExterno(boolean sistemaExterno) {
@@ -399,5 +398,5 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> implement
 	public void setIdSistemaExterno(String idSistemaExterno) {
 		IdSistemaExterno = idSistemaExterno;
 	}
-	
+
 }

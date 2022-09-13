@@ -7,6 +7,7 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.ws.rest.service.CRUDEPService;
 
 public interface MoldeEPService extends CRUDEPService<Long, MoldeDTO> {
@@ -23,5 +24,9 @@ public interface MoldeEPService extends CRUDEPService<Long, MoldeDTO> {
 
 	List<MoldeDimensionListadoDTO> updateMoldeDimensiones(Long idMolde,
 			List<MoldeDimensionListadoDTO> moldeDimensionListadoDTOs);
+
+	List<MoldeRegistroDTO> getMoldesRegistro(Long idMolde);
+
+	MoldeRegistroDTO saveMoldeRegistro(MoldeRegistroDTO moldeRegistroDTO);
 
 }
