@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
@@ -133,5 +137,61 @@ public class MoldesRestController extends AbstractDTORestController<MoldeDTO, Lo
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/molde/plano/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> getMoldePlano(@PathVariable("idMolde") Long idMolde) throws Exception {
+		List<MoldePlanoListadoDTO> moldePlanoDTOs = this.service.getMoldesPlano(idMolde);
+		JSONResponse response = new JSONResponse();
+		response.setData(moldePlanoDTOs);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/molde/plano/", method = RequestMethod.POST)
+	public ResponseEntity<JSONResponse> addMoldePlano(@RequestBody MoldePlanoDTO moldePlanoDTO) throws Exception {
+		MoldePlanoDTO saved = this.service.addMoldePlano(moldePlanoDTO);
+		JSONResponse response = new JSONResponse();
+		response.setData(saved);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/molde/plano/descargar/{idMoldePlano}", method = RequestMethod.POST)
+	public ResponseEntity<JSONResponse> downloadMoldePlano(@PathVariable("idMoldePlano") Long idMoldePlano) throws Exception {
+		MoldePlanoDTO saved = this.service.downloadMoldePlano(idMoldePlano);
+		JSONResponse response = new JSONResponse();
+		response.setData(saved);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+		
+	@RequestMapping(value = "/molde/foto/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> getMoldeFoto(@PathVariable("idMolde") Long idMolde) throws Exception {
+		List<MoldeFotoListadoDTO> moldeFotoDTOs = this.service.getMoldesFoto(idMolde);
+		JSONResponse response = new JSONResponse();
+		response.setData(moldeFotoDTOs);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/molde/foto/", method = RequestMethod.POST)
+	public ResponseEntity<JSONResponse> addMoldeFoto(@RequestBody MoldeFotoDTO moldeFotoDTO) throws Exception {
+		MoldeFotoDTO saved = this.service.addMoldeFoto(moldeFotoDTO);
+		JSONResponse response = new JSONResponse();
+		response.setData(saved);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/molde/foto/descargar/{idMoldeFoto}", method = RequestMethod.POST)
+	public ResponseEntity<JSONResponse> downloadMoldeFoto(@PathVariable("idMoldeFoto") Long idMoldeFoto) throws Exception {
+		MoldeFotoDTO saved = this.service.downloadMoldeFoto(idMoldeFoto);
+		JSONResponse response = new JSONResponse();
+		response.setData(saved);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
+	
 	
 }

@@ -111,8 +111,8 @@ public class NotificacionServiceImpl implements NotificacionService {
 	@Override
 	public void notificarResetoPassword(Cliente cliente, String tmppass) {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("cliente", cliente.getNombreApellido());
-		params.put("usuario", cliente.getUsername());
+		//params.put("cliente", cliente.getNombreApellido());
+		//params.put("usuario", cliente.getUsername());
 		params.put("password", tmppass);
 		mailSenderSMTPService.sendMail(from, cliente.getEmail(), subjectResetoPasswordCliente,
 				getBody(params, bodyResetoPasswordCliente), null);
@@ -122,8 +122,8 @@ public class NotificacionServiceImpl implements NotificacionService {
 	@Override
 	public void notificarRegistroClienteNuevoPassword(Cliente cliente, String tmpass) {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("cliente", cliente.getNombreApellido());
-		params.put("usuario", cliente.getUsername());
+		//params.put("cliente", cliente.getNombreApellido());
+		//params.put("usuario", cliente.getUsername());
 		params.put("password", tmpass);
 		mailSenderSMTPService.sendMail(from, cliente.getEmail(), subjectRegistroClienteNuevoPassword,
 				getBody(params, bodyRegistroClienteNuevoPassword), null);
@@ -132,9 +132,8 @@ public class NotificacionServiceImpl implements NotificacionService {
 	@Override
 	public void notificarHabilitacionExitosa(Cliente cliente) {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("cliente", cliente.getNombreApellido());		
-		mailSenderSMTPService.sendMail(from, cliente.getEmail(), subjectHabilitacionExistosa,
-				getBody(params, bodyHabilitacionExistosa), null);
+		//params.put("cliente", cliente.getNombreApellido());		
+		mailSenderSMTPService.sendMail(from, cliente.getEmail(), subjectHabilitacionExistosa, getBody(params, bodyHabilitacionExistosa), null);
 		
 	}
 	

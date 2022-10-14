@@ -2,89 +2,62 @@ package ar.com.avaco.nitrophyl.domain.entities.cliente;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 @Entity
-@Table(name = "CLI_CONTACTO")
+@Table(name = "CLIENTE_CONTACTO")
+@SequenceGenerator(name = "CLIENTE_CONTACTO_SEQ", sequenceName = "CLIENTE_CONTACTO_SEQ", allocationSize = 1)
 public class Contacto extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = -3260414467249766837L;
 
-	/**
-	 * Id de Identificacion igual al Id de Cliente. Al ser una relacion 1 a 1 es el
-	 * mismo Id.
-	 */
 	@Id
-	@GeneratedValue(generator = "foreigngencontacto")
-	@GenericGenerator(strategy = "foreign", name = "foreigngencontacto", parameters = @Parameter(name = "property", value = "cliente"))
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENTE_CONTACTO_SEQ")
 	@Column(name = "ID_CONTACTO")
 	private Long id;
-
+	
 	/**
 	 * El cliente al cual pertenece el contacto.
 	 */
-	@OneToOne(mappedBy = "contacto", optional = false)
-	@PrimaryKeyJoinColumn
-	private Cliente cliente;
-
+	@ManyToOne
+    @JoinColumn(name="ID_CLIENTE", nullable=false)
+    private Cliente cliente;
+	
+	/**
+	 * Tipo de contacto (COMPRAS, CONTADURIA, CALIDAD).
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TIPO_CONTACTO", nullable = false)
+	private TipoContacto tipo;
+	
 	/**
 	 * Nombre de la persona responsable con quien contactarse en caso de ser empresa.
 	 */
-	@Column(name = "NOMBRE_CONTACTO")
-	private String nombreContacto;
+	@Column(name = "NOMBRE_CONTACTO", nullable = false)
+	private String nombre;
 	
+	/**
+	 * Email del contacto.
+	 */
+	@Column(name = "EMAIL_CONTACTO")
+	private String email;
 	
 	/**
-	 * El domicilio completo.
+	 * Telefono del contacto
 	 */
-	@Column(name = "DOMICILIO")
-	private String domicilio;
+	@Column(name = "TEL_CONTACTO")
+	private String telefono;
 
-	/**
-	 * El codigo postal.
-	 */
-	@Column(name = "CODIGO_POSTAL")
-	private String codigoPostal;
-
-	/**
-	 * El barrio.
-	 */
-	@Column(name = "BARRIO")
-	private String barrio;
-
-	/**
-	 * Localidad.
-	 */
-	@Column(name = "LOCALIDAD")
-	private String localidad;
-
-	/**
-	 * Provincia.
-	 */
-	@Enumerated
-	@Column(name = "PROVINCIA")
-	private Provincia provincia;
-
-	/**
-	 * Telefono fijo.
-	 */
-	@Column(name = "TEL_FIJO")
-	private String telefonoFijo;
-
-	/**
-	 * Telefono celular.
-	 */
-	@Column(name = "TEL_CELULAR", nullable = false)
-	private String telefonoMovil;
-
+	public Contacto() {}
+	
 	public Long getId() {
 		return id;
 	}
@@ -101,60 +74,36 @@ public class Contacto extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.cliente = cliente;
 	}
 
-	public String getDomicilio() {
-		return domicilio;
+	public TipoContacto getTipo() {
+		return tipo;
 	}
 
-	public void setDomicilio(String domicilio) {
-		this.domicilio = domicilio;
+	public void setTipo(TipoContacto tipo) {
+		this.tipo = tipo;
 	}
 
-	public String getCodigoPostal() {
-		return codigoPostal;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setCodigoPostal(String codigoPostal) {
-		this.codigoPostal = codigoPostal;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getBarrio() {
-		return barrio;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setBarrio(String barrio) {
-		this.barrio = barrio;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getLocalidad() {
-		return localidad;
+	public String getTelefono() {
+		return telefono;
 	}
 
-	public void setLocalidad(String localidad) {
-		this.localidad = localidad;
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
-
-	public Provincia getProvincia() {
-		return provincia;
-	}
-
-	public void setProvincia(Provincia provincia) {
-		this.provincia = provincia;
-	}
-
-	public String getTelefonoFijo() {
-		return telefonoFijo;
-	}
-
-	public void setTelefonoFijo(String telefonoFijo) {
-		this.telefonoFijo = telefonoFijo;
-	}
-
-	public String getTelefonoMovil() {
-		return telefonoMovil;
-	}
-
-	public void setTelefonoMovil(String telefonoMovil) {
-		this.telefonoMovil = telefonoMovil;
-	}
-
+	
 }

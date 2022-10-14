@@ -5,15 +5,19 @@ import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 
 public interface ClienteRepository extends NJRepository<Long, Cliente>, ClienteRepositoryCustom {
 
-	Cliente findByUsernameEquals(String username);
+	Cliente findByRazonSocialEqualsIgnoreCase(String razonSocial);
+	
+	//List<Contacto> findByIdMolde(Long idMolde);
+	
+	//Cliente findByUsernameEquals(String username);
 
-	Cliente findByUsernameEqualsIgnoreCase(String username);
+	//Cliente findByUsernameEqualsIgnoreCase(String username);
 
-	Cliente findByEmailEqualsIgnoreCase(String email);
+	//Cliente findByEmailEqualsIgnoreCase(String email);
 
-	Cliente findByIdentificacionNumeroEqualsIgnoreCase(String numero);
+	//Cliente findByIdentificacionNumeroEqualsIgnoreCase(String numero);
 
-	Cliente findByIdentificacionNumeroLikeIgnoreCase(String numero);
+	//Cliente findByIdentificacionNumeroLikeIgnoreCase(String numero);
 
 	//TODO No existe cuenta bancaria, revisar
 	//Cliente findByCuentaBancariaAliasEqualsIgnoreCase(String cbu);

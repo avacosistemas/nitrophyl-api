@@ -7,23 +7,34 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoBoca;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeBoca;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeDimension;
+import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeFoto;
+import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeRegistro;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoRegistroMolde;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeDimensionService;
-import ar.com.avaco.nitrophyl.service.molde.MoldeService;
+import ar.com.avaco.nitrophyl.service.molde.MoldeFotoService;
+import ar.com.avaco.nitrophyl.service.molde.MoldePlanoService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeRegistroService;
+import ar.com.avaco.nitrophyl.service.molde.MoldeService;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
+import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Service("moldeEPService")
@@ -38,6 +49,12 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 	
 	@Resource(name = "moldeRegistroService")
 	private MoldeRegistroService moldeRegistroService;
+	
+	@Resource(name = "moldePlanoService")
+	private MoldePlanoService moldePlanoService;
+	
+	@Resource(name = "moldeFotoService")
+	private MoldeFotoService moldeFotoService;
 	
 	@Override
 	protected Molde convertToEntity(MoldeDTO dto) {
@@ -197,7 +214,80 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		}
 		return new MoldeRegistroDTO(nmr);
 	}
+	
+	@Override
+	public List<MoldeFotoListadoDTO> getMoldesFoto(Long idMolde) {
+		List<MoldeFoto> list = moldeFotoService.listByMoldeId(idMolde);
+		List<MoldeFotoListadoDTO> ret = new ArrayList<>();
+		list.forEach(mp -> ret.add(new MoldeFotoListadoDTO(mp)));
+		return ret;
+	}
+	
+	@Override
+	public MoldePlanoDTO addMoldePlano(MoldePlanoDTO moldePlanoDTO) throws ErrorValidationException, BusinessException {
+		
+		if (moldePlanoDTO != null) {
+			MoldePlano mp = new MoldePlano();
+			mp.setIdMolde(moldePlanoDTO.getIdMolde());
+			mp.setNombreArchivo(moldePlanoDTO.getNombreArchivo());
+			mp.setArchivo(moldePlanoDTO.getArchivo());
+			mp.setFecha(DateUtils.getFechaYHoraActual());
+			mp.setVersion(1);
+			
+			MoldePlano nmp = this.moldePlanoService.addMoldePlano(mp);
+			return new MoldePlanoDTO(nmp);
+		}		
+		return null;
+	}
+	
+	@Override
+	public MoldePlanoDTO downloadMoldePlano(Long idMoldePlano) {
+		MoldePlano moldePlano = moldePlanoService.get(idMoldePlano);
+		
+		MoldePlanoDTO moldePlanoDTO = new MoldePlanoDTO();
+		moldePlanoDTO.setIdMolde(idMoldePlano);
+		moldePlanoDTO.setNombreArchivo(moldePlano.getNombreArchivo());
+		moldePlanoDTO.setArchivo(moldePlano.getArchivo());
+		
+		return moldePlanoDTO;
+	}
 
+	@Override
+	public List<MoldePlanoListadoDTO> getMoldesPlano(Long idMolde) {
+		List<MoldePlano> list = moldePlanoService.listByMoldeId(idMolde);
+		List<MoldePlanoListadoDTO> ret = new ArrayList<>();
+		list.forEach(mp -> ret.add(new MoldePlanoListadoDTO(mp)));
+		return ret;
+	}
+	
+	@Override
+	public MoldeFotoDTO addMoldeFoto(MoldeFotoDTO moldeFotoDTO) throws ErrorValidationException, BusinessException {
+		
+		if (moldeFotoDTO != null) {
+			MoldeFoto mf = new MoldeFoto();
+			mf.setIdMolde(moldeFotoDTO.getIdMolde());
+			mf.setNombreArchivo(moldeFotoDTO.getNombreArchivo());
+			mf.setArchivo(moldeFotoDTO.getArchivo());
+			mf.setFecha(DateUtils.getFechaYHoraActual());
+			mf.setVersion(1);
+			
+			MoldeFoto nmf = this.moldeFotoService.addMoldeFoto(mf);
+			return new MoldeFotoDTO(nmf);
+		}		
+		return null;
+	}
+	
+	@Override
+	public MoldeFotoDTO downloadMoldeFoto(Long idMoldeFoto) {
+		MoldeFoto moldeFoto = moldeFotoService.get(idMoldeFoto);
+		
+		MoldeFotoDTO moldeFotoDTO = new MoldeFotoDTO();
+		moldeFotoDTO.setIdMolde(idMoldeFoto);
+		moldeFotoDTO.setNombreArchivo(moldeFoto.getNombreArchivo());
+		moldeFotoDTO.setArchivo(moldeFoto.getArchivo());
+		
+		return moldeFotoDTO;
+	}
 	
 	
 }

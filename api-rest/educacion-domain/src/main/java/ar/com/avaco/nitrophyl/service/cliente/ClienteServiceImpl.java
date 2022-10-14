@@ -1,53 +1,174 @@
 package ar.com.avaco.nitrophyl.service.cliente;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.arc.sec.exception.NuclearJSecurityException;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Contacto;
-import ar.com.avaco.nitrophyl.domain.entities.cliente.Identificacion;
-import ar.com.avaco.nitrophyl.domain.entities.cliente.TipoIdentificacion;
 import ar.com.avaco.nitrophyl.repository.cliente.ClienteRepository;
-import ar.com.avaco.nitrophyl.service.notificacion.NotificacionService;
-import ar.com.avaco.validation.Validations;
+import ar.com.avaco.nitrophyl.repository.cliente.ContactoRepository;
+
 
 @Transactional
 @Service("clienteService")
 public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepository>
-		implements ClienteService, UserDetailsService {
+		implements ClienteService {
 
-	private Integer INICIO_REINTENTOS_LOGIN = 0;
-
-	/**
-	 * The Password Encoder
-	 */
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	private NotificacionService notificacionService;
 
 	private Logger logger = Logger.getLogger(getClass());
 	
+	private ContactoRepository contactoRepository;
+	
+	
+	@Override
+	public Cliente getCliente(Long id) {
+		return this.repository.findOne(id);
+	}
+	
+	@Override
+	public List<Contacto> getContactosByCliente(Long idCliente) {
+		return this.contactoRepository.findAllByClienteId(idCliente);
+	}
+	
+	@Override
+	public Contacto getContacto(Long idContactoCliente) {
+		return this.contactoRepository.findOne(idContactoCliente);
+	}
+	
+	@Override
+	public Cliente addCliente(Cliente clienteToAdd) throws ErrorValidationException, BusinessException {
+		validarCliente(clienteToAdd);
+		clienteToAdd = this.repository.save(clienteToAdd);
+
+		return clienteToAdd;
+	}
+	
+	@Override
+	public Cliente updateCliente(Cliente clienteToUpdate) throws ErrorValidationException, BusinessException {
+		validarCliente(clienteToUpdate);
+		clienteToUpdate = this.repository.save(clienteToUpdate);
+		return clienteToUpdate;
+	}
+	
+	@Override
+	public Contacto addContactoCliente(Long idCliente, Contacto contactoToAdd) throws ErrorValidationException, BusinessException {
+		
+		Cliente cliente = repository.findOne(idCliente);
+
+		if (cliente == null)
+			throw new EntityNotFoundException("No se encontro el cliente con ID: " + idCliente);
+
+		contactoToAdd.setCliente(cliente);
+		validarContactoCliente(contactoToAdd, cliente.getContactos());
+
+		contactoToAdd = this.contactoRepository.save(contactoToAdd);
+
+		return contactoToAdd;
+	}
+	
+	@Override
+	public Contacto updateContactoCliente(Contacto contacto) throws ErrorValidationException, BusinessException {
+		
+		Contacto contactoToUpdate = contactoRepository.findOne(contacto.getId());
+		
+		validarContactoCliente(contactoToUpdate, contactoToUpdate.getCliente().getContactos());
+		
+		contactoToUpdate.setNombre(contacto.getNombre());
+		contactoToUpdate.setEmail(contacto.getEmail());
+		contactoToUpdate.setTelefono(contacto.getTelefono());
+		contactoToUpdate.setTipo(contacto.getTipo());
+		
+		contactoToUpdate = this.contactoRepository.save(contactoToUpdate);
+		return contactoToUpdate;
+	}
+	
+	//Valida los campos para el cliente
+	private void validarCliente(Cliente cliente) throws ErrorValidationException, BusinessException {
+		Map<String, String> errores = new HashMap<>();
+		
+		if (cliente == null) {
+			throw new BusinessException("Cliente vacío.");
+		}
+		
+		if (StringUtils.isBlank(cliente.getRazonSocial())) {
+			errores.put("razonSocial", "El campo Razon Social es requerido.");
+		} else {
+			
+			Cliente cliByRazonSocial = getRepository().findByRazonSocialEqualsIgnoreCase(cliente.getRazonSocial());
+			
+			if(cliByRazonSocial!=null && cliente.getId()==null || 
+					cliByRazonSocial!=null && cliente.getId()!=null && !cliente.getId().equals(cliByRazonSocial.getId())) {
+				errores.put("razonSocial", "La Razon Social no esta disponible. Intente otra diferente.");
+			}
+		}
+		
+		if (!errores.isEmpty()) {
+			logger.error("Se encontraron los siguientes errores");
+			errores.values().forEach((x->logger.error(x)));
+			throw new ErrorValidationException("Se encontraron los siguientes errores", errores);
+		}
+		
+	}
+	
+	//Valida los campos para el contacto del cliente
+	private void validarContactoCliente(Contacto contacto, Set<Contacto> contactos) throws ErrorValidationException, BusinessException {
+		Map<String, String> errores = new HashMap<>();
+		
+		if (contacto == null) {
+			throw new BusinessException("Contacto vacío.");
+		}
+		
+		Contacto existContacto = contactos.stream().filter(c -> 
+				(contacto.getId() == null  || (contacto.getId() != null && contacto.getId() != c.getId())) && 
+					c.getCliente().getId().equals(contacto.getCliente().getId()) && c.getNombre().equals(contacto.getNombre()) && c.getTipo().equals(contacto.getTipo())
+				).findFirst().orElse(null);
+
+		if(existContacto != null) {
+			throw new BusinessException("Ya existe un contacto con el mismo nombre y tipo para este cliente.");
+		}
+		
+		if (StringUtils.isBlank(contacto.getNombre())) {
+			errores.put("nombreContacto", "El campo Nombre es requerido.");
+		} else if (contacto.getNombre().length() > 30) {
+			errores.put("nombreContacto", "El campo Nombre no debe superar los 30 caracteres");
+		}
+		
+		if (contacto.getTipo() == null) {
+			errores.put("tipoContacto", "El campo Tipo es requerido.");
+		}
+		
+		if (!errores.isEmpty()) {
+			logger.error("Se encontraron los siguientes errores");
+			errores.values().forEach((x->logger.error(x)));
+			throw new ErrorValidationException("Se encontraron los siguientes errores", errores);
+		}
+		
+	}
+	
+	@Resource(name = "contactoRepository")
+	void setContactoRepository(ContactoRepository contactoRepository) {
+		this.contactoRepository = contactoRepository;
+	}
+	
+	@Resource(name = "clienteRepository")
+	void setClienteRepository(ClienteRepository clienteRepository) {
+		this.repository = clienteRepository;
+	}
+	
+	/*
 	@Override
 	public Cliente registrarClientePersona(Cliente cliente) throws ErrorValidationException, BusinessException {
 		validarClienteNoVacio(cliente);
@@ -57,24 +178,14 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 		return cliente;
 	}
 	
-	/**
-	 *  Valida que los requerimientos de contraseña sean validos
-	 * 
-	 * @param cliente
-	 * @throws BusinessException 
-	 */
+	//Valida que los requerimientos de contraseña sean validos
 	private void validarContraseña(Cliente cliente) throws BusinessException {
 		if (cliente.getPassword()==null)
 			throw new BusinessException("Debe ingresar una contraseña.");			
 	}
 
-	/**
-	 * Valida que la composición del cliente este completa, que no sea null y que la
-	 * cuenta bancaria, el contacto y el ingreso tampoco sea null.
-	 * 
-	 * @param cliente profesor o alumno
-	 * @throws BusinessException error de negocio
-	 */
+	//Valida que la composición del cliente este completa, que no sea null y que la
+	//cuenta bancaria, el contacto y el ingreso tampoco sea null.
 	private void validarClienteNoVacio(Cliente cliente) throws BusinessException {
 		if (cliente == null) {
 			throw new BusinessException("Cliente vacío.");
@@ -83,15 +194,10 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 		}
 	}
 
-	/**
-	 * Ultimos detalles del registro del cliente. Lo pone como desbloqueado. Setea
-	 * la cantidad de inicios de reintento de login en cero. Setea que debe
-	 * cambiarse el password. Genera un password aleatorio y notifica al cliente la
-	 * bienvenida por mail.
-	 * 
-	 * @param cliente el cliente a registrar
-	 * @return el profesor o alumno registrado
-	 */
+	//Ultimos detalles del registro del cliente. Lo pone como desbloqueado. Setea
+	//la cantidad de inicios de reintento de login en cero. Setea que debe
+	//cambiarse el password. Genera un password aleatorio y notifica al cliente la
+	//bienvenida por mail.
 	private Cliente registrarCliente(Cliente cliente) {
 		// Por default el cliente se da de desbloqueado.
 		cliente.setBloqueado(false);
@@ -148,12 +254,7 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 		notificacionService.notificarRegistroClienteNuevoPassword(cliente, tmpass);
 	}
 	
-	/**
-	 * Valida que el username, email y numero de identificacion no se encuentre
-	 * registrado.
-	 * 
-	 * @param cliente el cliente a validar.
-	 */
+	// Valida que el username, email y numero de identificacion no se encuentre registrado.
 	public void validarAltaModificacionCliente(Cliente cliente) throws ErrorValidationException {
 
 		Map<String, String> errores = new HashMap<>();
@@ -350,5 +451,5 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 	public void setNotificacionService(NotificacionService notificacionService) {
 		this.notificacionService = notificacionService;
 	}
-
+*/
 }

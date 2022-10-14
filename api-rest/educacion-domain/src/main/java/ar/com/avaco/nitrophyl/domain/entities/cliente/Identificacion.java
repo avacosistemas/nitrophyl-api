@@ -39,9 +39,9 @@ public class Identificacion extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	/**
 	 * El cliente al cual pertenece la identificacion.
 	 */
-	@OneToOne(mappedBy = "identificacion", optional = false)
-	@PrimaryKeyJoinColumn
-	private Cliente cliente;
+	//@OneToOne(mappedBy = "identificacion", optional = false)
+	//@PrimaryKeyJoinColumn
+	//private Cliente cliente;
 
 	/**
 	 * Tipo de identificacion.
@@ -80,13 +80,14 @@ public class Identificacion extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.id = id;
 	}
 
+	/*
 	public Cliente getCliente() {
 		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
+	}*/
 
 	@Override
 	public String toString() {

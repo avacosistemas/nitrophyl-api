@@ -15,7 +15,7 @@ import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 
 /**
  * Repositorio de Clientes
- * @author beto
+ * @author betongo
  *
  */
 @Repository("clienteRepository")
@@ -24,25 +24,19 @@ public class ClienteRepositoryImpl extends NJBaseRepository<Long, Cliente> imple
 	public ClienteRepositoryImpl(EntityManager entityManager) {
 		super(Cliente.class, entityManager);
 	}
-
+	
 	@Override
-	public Cliente getClienteCompleto(Long id) {
+	public Cliente getCliente(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getHandledClass());
 		criteria.add(Restrictions.eq("id", id));
-		criteria.setFetchMode("identificacion", FetchMode.JOIN); 
-		criteria.setFetchMode("cuentaBancaria", FetchMode.JOIN); 
 		criteria.setFetchMode("contacto", FetchMode.JOIN); 
-		criteria.setFetchMode("ingreso", FetchMode.JOIN); 
 		return (Cliente) criteria.uniqueResult();
 	}
 
 	@Override
-	public List<Cliente> listClientesListado() {
+	public List<Cliente> listClientes() {
 		Criteria criteria = getCurrentSession().createCriteria(getHandledClass());
-		criteria.setFetchMode("identificacion", FetchMode.JOIN); 
-//		criteria.setFetchMode("cuentaBancaria", FetchMode.JOIN); 
 		criteria.setFetchMode("contacto", FetchMode.JOIN); 
-//		criteria.setFetchMode("ingreso", FetchMode.JOIN);
 		criteria.addOrder(Order.asc("username"));
 		return criteria.list();
 	}

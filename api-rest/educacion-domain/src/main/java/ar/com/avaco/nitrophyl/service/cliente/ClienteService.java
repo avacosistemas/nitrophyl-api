@@ -1,7 +1,6 @@
 package ar.com.avaco.nitrophyl.service.cliente;
 
-import java.util.List
-;
+import java.util.List;
 
 import ar.com.avaco.arc.core.component.bean.service.NJService;
 import ar.com.avaco.commons.exception.BusinessException;
@@ -9,9 +8,26 @@ import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Contacto;
 
+
 public interface ClienteService extends NJService<Long, Cliente> {
 
-	Cliente getClientePorUsername(String username);
+	Cliente getCliente(Long id);
+	
+	List<Contacto> getContactosByCliente(Long idCliente);
+
+	Contacto getContacto(Long idContactoCliente);
+
+	Contacto addContactoCliente(Long idCliente, Contacto contactoToAdd) throws ErrorValidationException, BusinessException;
+
+	Contacto updateContactoCliente(Contacto contactoToUpdate) throws ErrorValidationException, BusinessException;
+
+	Cliente addCliente(Cliente clienteToAdd) throws ErrorValidationException, BusinessException;
+
+	Cliente updateCliente(Cliente clienteToUpdate) throws ErrorValidationException, BusinessException;
+
+	
+
+	/*Cliente getClientePorUsername(String username);
 
 	Cliente registrarClientePersona(Cliente cliente) throws ErrorValidationException, BusinessException;
 
@@ -25,6 +41,6 @@ public interface ClienteService extends NJService<Long, Cliente> {
 	
 	void updatePassword(Cliente user, String password,String newPassword);
 
-	Cliente getClientePorMail(String username);
+	Cliente getClientePorMail(String username);*/
 
 }
