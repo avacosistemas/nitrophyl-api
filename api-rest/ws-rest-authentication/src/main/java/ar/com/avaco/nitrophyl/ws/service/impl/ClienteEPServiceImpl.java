@@ -12,6 +12,7 @@ import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Contacto;
+import ar.com.avaco.nitrophyl.domain.entities.cliente.Provincia;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.ClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ContactoDTO;
@@ -105,7 +106,7 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 			clienteDTO.setDomicilio(entity.getDomicilio());
 			clienteDTO.setCodigoPostal(entity.getCodigoPostal());
 			clienteDTO.setLocalidad(entity.getLocalidad());
-			clienteDTO.setProvincia(entity.getProvincia());
+			clienteDTO.setProvincia(entity.getProvincia().name());
 			clienteDTO.setTelefonoFijo(entity.getTelefonoFijo());
 			clienteDTO.setTelefonoCelular(entity.getTelefonoCelular());
 			clienteDTO.setEmail(entity.getEmail());
@@ -142,7 +143,7 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 		cliente.setDomicilio(dto.getDomicilio());
 		cliente.setCodigoPostal(dto.getCodigoPostal());
 		cliente.setLocalidad(dto.getLocalidad());
-		cliente.setProvincia(dto.getProvincia());
+		cliente.setProvincia(Provincia.valueOf(dto.getProvincia()));
 		cliente.setTelefonoFijo(dto.getTelefonoFijo());
 		cliente.setTelefonoCelular(dto.getTelefonoCelular());
 		cliente.setEmail(dto.getEmail());

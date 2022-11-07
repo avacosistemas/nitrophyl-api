@@ -1,5 +1,7 @@
 package ar.com.avaco.ws.rest.controller;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
+
+import ar.com.avaco.nitrophyl.domain.entities.cliente.Provincia;
 import ar.com.avaco.nitrophyl.ws.dto.ClienteDTO;
+import ar.com.avaco.nitrophyl.ws.dto.ComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ContactoDTO;
 import ar.com.avaco.nitrophyl.ws.service.ClienteEPService;
 import ar.com.avaco.nitrophyl.ws.service.filter.ClienteFilter;
@@ -96,7 +102,7 @@ public class ClientesRestController extends AbstractDTORestController<ClienteDTO
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = " /cliente/{idCliente}/contacto", method = RequestMethod.POST)
+	@RequestMapping(value = "/cliente/{idCliente}/contacto", method = RequestMethod.POST)
 	public ResponseEntity<JSONResponse> addContactoCliente(@PathVariable("idCliente") Long idCliente,
 			@RequestBody ContactoDTO contactoDTO) throws Exception {
 		try {
@@ -121,5 +127,15 @@ public class ClientesRestController extends AbstractDTORestController<ClienteDTO
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-
+	
+	@RequestMapping(value = "/provincias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> listProvincias() throws Exception {
+		List<ComboDTO> provincias = new ArrayList<ComboDTO>();
+		new ArrayList<Provincia>(EnumSet.allOf(Provincia.class)).forEach(x->provincias.add(new ComboDTO(x.getNombre(), x.name())));
+		JSONResponse response = new JSONResponse();
+		response.setData(provincias);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
 }

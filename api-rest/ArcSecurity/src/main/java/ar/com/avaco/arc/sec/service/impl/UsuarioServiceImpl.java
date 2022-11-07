@@ -69,16 +69,16 @@ public class UsuarioServiceImpl extends NJBaseService<Long, Usuario, UsuarioRepo
 
 		// Por mas que luego se reenviara el password, se requerira cambio de
 		// password.
-		usuario.setRequiereCambioPassword(true);
+		usuario.setRequiereCambioPassword(false);
 
-		String tmppass = generarPasswordAleatorio();
+		String tmppass = "nitro2022"; //generarPasswordAleatorio();
 		usuario.setPassword(passwordEncoder.encode(tmppass));
 
 		usuario = getRepository().save(usuario);
 
-		if (mailSenderSMTPService != null) {
-			notifyPasswordNewUser(usuario, tmppass);
-		}
+//		if (mailSenderSMTPService != null) {
+//			notifyPasswordNewUser(usuario, tmppass);
+//		}
 		return usuario;
 	}
 

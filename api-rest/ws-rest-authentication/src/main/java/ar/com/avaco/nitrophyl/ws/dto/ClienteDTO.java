@@ -1,6 +1,5 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.cliente.Provincia;
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class ClienteDTO extends DTOEntity<Long> {
@@ -10,7 +9,7 @@ public class ClienteDTO extends DTOEntity<Long> {
 	private String domicilio;
 	private String codigoPostal;
 	private String localidad;
-	private Provincia provincia;
+	private String provincia;
 	private String telefonoFijo;
 	private String telefonoCelular;
 	private String email;
@@ -60,11 +59,11 @@ public class ClienteDTO extends DTOEntity<Long> {
 		this.localidad = localidad;
 	}
 
-	public Provincia getProvincia() {
+	public String getProvincia() {
 		return provincia;
 	}
 
-	public void setProvincia(Provincia provincia) {
+	public void setProvincia(String provincia) {
 		this.provincia = provincia;
 	}
 
