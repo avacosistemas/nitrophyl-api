@@ -38,18 +38,18 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	 */
 	@Column(name = "RAZON_SOCIAL", nullable = false)
 	private String razonSocial;
-	
+
 	/**
 	 * Contacto con el cliente.
-	
-	@NotNull
-	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@PrimaryKeyJoinColumn
-	private Contacto contacto;*/ 
-	
-	@OneToMany(targetEntity= Contacto.class, mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	 * 
+	 * @NotNull
+	 * @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	 * @PrimaryKeyJoinColumn private Contacto contacto;
+	 */
+
+	@OneToMany(targetEntity = Contacto.class, mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Contacto> contactos = new HashSet<>();
-	
+
 	/**
 	 * El domicilio completo.
 	 */
@@ -61,7 +61,7 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	 */
 	@Column(name = "CODIGO_POSTAL", length = 10)
 	private String codigoPostal;
-	
+
 	/**
 	 * Localidad.
 	 */
@@ -74,44 +74,33 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Enumerated
 	@Column(name = "PROVINCIA")
 	private Provincia provincia;
-	
-	/**
-	 * Telefono fijo.
-	 */
-	@Column(name = "TEL_FIJO")
-	private String telefonoFijo;
 
-	/**
-	 * Telefono celular.
-	 */
-	@Column(name = "TEL_CELULAR")
-	private String telefonoCelular;
-	
 	/**
 	 * Email del cliente.
 	 */
 	@Column(name = "EMAIL")
 	private String email;
-	
+
 	/**
 	 * Sitio web.
 	 */
 	@Column(name = "WEB_SITE")
 	private String webSite;
-	
+
 	/**
 	 * CUIT
 	 */
 	@Column(name = "CUIT")
 	private String cuit;
-	
-	/**
-	 * Ingreso brutos
-	 */
-	@Column(name = "INGRESOS_BRUTOS")
-	private Double ingresosBrutos;
 
-	public Cliente() {}
+	@Column(name = "OBS_COBRANZAS")
+	private String observacionesCobranzas;
+
+	@Column(name = "OBS_ENTREGA")
+	private String observacionesEntrega;
+
+	public Cliente() {
+	}
 
 	public Long getId() {
 		return id;
@@ -128,7 +117,7 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
 	}
-	
+
 	public Set<Contacto> getContactos() {
 		return contactos;
 	}
@@ -177,22 +166,6 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.provincia = provincia;
 	}
 
-	public String getTelefonoFijo() {
-		return telefonoFijo;
-	}
-
-	public void setTelefonoFijo(String telefonoFijo) {
-		this.telefonoFijo = telefonoFijo;
-	}
-
-	public String getTelefonoCelular() {
-		return telefonoCelular;
-	}
-
-	public void setTelefonoCelular(String telefonoCelular) {
-		this.telefonoCelular = telefonoCelular;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -217,18 +190,22 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.cuit = cuit;
 	}
 
-	public Double getIngresosBrutos() {
-		return ingresosBrutos;
+	public String getObservacionesCobranzas() {
+		return observacionesCobranzas;
 	}
 
-	public void setIngresosBrutos(Double ingresosBrutos) {
-		this.ingresosBrutos = ingresosBrutos;
+	public void setObservacionesCobranzas(String observacionesCobranzas) {
+		this.observacionesCobranzas = observacionesCobranzas;
 	}
-	
-	
 
-	
-	
+	public String getObservacionesEntrega() {
+		return observacionesEntrega;
+	}
+
+	public void setObservacionesEntrega(String observacionesEntrega) {
+		this.observacionesEntrega = observacionesEntrega;
+	}
+
 	
 	
 }

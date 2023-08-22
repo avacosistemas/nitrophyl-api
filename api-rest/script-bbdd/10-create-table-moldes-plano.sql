@@ -4,6 +4,7 @@ CREATE TABLE moldeplano (
 	nombrearchivo varchar NULL,
 	version numeric NULL,
 	fecha timestamp NULL,
+	archivo bytea NULL,
 	CONSTRAINT moldeplano_pk PRIMARY KEY (id_molde_plano),
 	CONSTRAINT moldeplano_un UNIQUE (id_molde_plano),
 	CONSTRAINT moldeplano_fk FOREIGN KEY (id_molde) REFERENCES public.moldes(id_molde)

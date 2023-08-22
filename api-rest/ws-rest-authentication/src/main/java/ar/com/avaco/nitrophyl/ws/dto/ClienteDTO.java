@@ -10,14 +10,14 @@ public class ClienteDTO extends DTOEntity<Long> {
 	private String codigoPostal;
 	private String localidad;
 	private String provincia;
-	private String telefonoFijo;
-	private String telefonoCelular;
 	private String email;
 	private String webSite;
 	private String cuit;
-	private Double ingresosBrutos;
+	private String observacionesCobranzas;
+	private String observacionesEntrega;
 
-	public ClienteDTO() {}
+	public ClienteDTO() {
+	}
 
 	public Long getId() {
 		return id;
@@ -67,22 +67,6 @@ public class ClienteDTO extends DTOEntity<Long> {
 		this.provincia = provincia;
 	}
 
-	public String getTelefonoFijo() {
-		return telefonoFijo;
-	}
-
-	public void setTelefonoFijo(String telefonoFijo) {
-		this.telefonoFijo = telefonoFijo;
-	}
-
-	public String getTelefonoCelular() {
-		return telefonoCelular;
-	}
-
-	public void setTelefonoCelular(String telefonoCelular) {
-		this.telefonoCelular = telefonoCelular;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -107,13 +91,20 @@ public class ClienteDTO extends DTOEntity<Long> {
 		this.cuit = cuit;
 	}
 
-	public Double getIngresosBrutos() {
-		return ingresosBrutos;
+	public String getObservacionesCobranzas() {
+		return observacionesCobranzas;
 	}
 
-	public void setIngresosBrutos(Double ingresosBrutos) {
-		this.ingresosBrutos = ingresosBrutos;
+	public void setObservacionesCobranzas(String observacionesCobranzas) {
+		this.observacionesCobranzas = observacionesCobranzas;
 	}
 
+	public String getObservacionesEntrega() {
+		return observacionesEntrega;
+	}
+
+	public void setObservacionesEntrega(String observacionesEntrega) {
+		this.observacionesEntrega = observacionesEntrega;
+	}
 
 }

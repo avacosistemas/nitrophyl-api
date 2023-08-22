@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -22,7 +21,7 @@ import org.hibernate.annotations.Type;
 @Inheritance(strategy = InheritanceType.JOINED)
 @SequenceGenerator(name = "MOLDEPLANO_SEQ", sequenceName = "MOLDEPLANO_SEQ", allocationSize = 1)
 public class MoldePlano extends ar.com.avaco.arc.core.domain.Entity<Long> {
-	
+
 	private static final long serialVersionUID = 1176263407598988058L;
 
 	@Id
@@ -33,21 +32,24 @@ public class MoldePlano extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@ManyToOne
 	@JoinColumn(name = "ID_MOLDE", insertable = false, updatable = false)
 	private Molde molde;
-	
+
 	@Column(name = "ID_MOLDE")
 	private Long idMolde;
-	
+
 	@Column(name = "NOMBREARCHIVO")
 	private String nombreArchivo;
 
 	@Column(name = "VERSION")
 	private Integer version;
-	
+
 	@Column(name = "FECHA")
 	private Date fecha;
-	
+
+	@Column(name = "DESCRIPCION")
+	private String descripcion;
+
 	@Column(name = "ARCHIVO", nullable = true)
-    @Type(type="org.hibernate.type.BinaryType")
+	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] archivo;
 
 	public MoldePlano() {
@@ -108,6 +110,14 @@ public class MoldePlano extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setArchivo(byte[] archivo) {
 		this.archivo = archivo;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

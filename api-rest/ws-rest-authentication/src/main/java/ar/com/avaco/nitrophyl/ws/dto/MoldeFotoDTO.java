@@ -7,7 +7,8 @@ public class MoldeFotoDTO {
 	private Long idMolde;
 	private String nombreArchivo;
 	private byte[] archivo;
-	
+	private String descripcion;
+
 	public MoldeFotoDTO() {
 		super();
 	}
@@ -17,6 +18,7 @@ public class MoldeFotoDTO {
 		this.idMolde = mf.getIdMolde();
 		this.nombreArchivo = mf.getNombreArchivo();
 		this.archivo = mf.getArchivo();
+		this.descripcion = mf.getDescripcion();
 	}
 
 	public Long getIdMolde() {
@@ -41,6 +43,14 @@ public class MoldeFotoDTO {
 
 	public void setArchivo(byte[] archivo) {
 		this.archivo = archivo;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

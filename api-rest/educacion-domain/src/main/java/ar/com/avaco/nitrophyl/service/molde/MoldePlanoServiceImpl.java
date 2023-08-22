@@ -17,13 +17,12 @@ import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
 import ar.com.avaco.nitrophyl.repository.molde.MoldePlanoRepository;
 
-
 @Transactional
 @Service("moldePlanoService")
 public class MoldePlanoServiceImpl extends NJBaseService<Long, MoldePlano, MoldePlanoRepository>
 		implements MoldePlanoService {
 
-	private Logger logger = Logger.getLogger(getClass());		
+	private Logger logger = Logger.getLogger(getClass());
 
 	@Resource(name = "moldePlanoRepository")
 	void setMoldePlanoRepository(MoldePlanoRepository moldePlanoRepository) {
@@ -39,58 +38,55 @@ public class MoldePlanoServiceImpl extends NJBaseService<Long, MoldePlano, Molde
 	public MoldePlano getUltimoRegistro(Long idMolde) {
 		return this.repository.findFirstByIdMoldeOrderByFechaDesc(idMolde);
 	}
-	
+
 	@Override
 	public MoldePlano addMoldePlano(MoldePlano moldePlano) throws ErrorValidationException, BusinessException {
 		validarMoldePlano(moldePlano);
-		MoldePlano lastMoldePlano = this.repository.findFirstByNombreArchivoOrderByVersionDesc(moldePlano.getNombreArchivo());
-		
+		MoldePlano lastMoldePlano = this.repository
+				.findFirstByNombreArchivoOrderByVersionDesc(moldePlano.getNombreArchivo());
+
 		if (lastMoldePlano != null) {
 			moldePlano.setVersion(lastMoldePlano.getVersion() + 1);
 		}
-		
+
 		return this.repository.save(moldePlano);
 	}
-	
-	//Valida los campos para el molde plano
+
+	// Valida los campos para el molde plano
 	private void validarMoldePlano(MoldePlano moldePlano) throws ErrorValidationException, BusinessException {
 		Map<String, String> errores = new HashMap<>();
-		
+
 		if (moldePlano == null) {
 			throw new BusinessException("Molde Plano vacío.");
 		}
-		
+
 		if (StringUtils.isBlank(moldePlano.getNombreArchivo())) {
 			errores.put("nombreArchivo", "El campo Nombre Archivo es requerido.");
 		}
-		
+
 		if (moldePlano.getArchivo() == null) {
 			errores.put("archivo", "El campo Archivo es requerido.");
 		}
-		
+
 		if (!errores.isEmpty()) {
 			logger.error("Se encontraron los siguientes errores");
-			errores.values().forEach((x->logger.error(x)));
+			errores.values().forEach((x -> logger.error(x)));
 			throw new ErrorValidationException("Se encontraron los siguientes errores", errores);
 		}
-		
+
 	}
 
 	/*
-	@Override
-	public MoldeRegistro registrarIngreso(String comentarios, Long idMolde) {
-		MoldeRegistro mr = new MoldeRegistro();
-		mr.setComentarios(comentarios);
-		mr.setFecha(DateUtils.getFechaYHoraActual());
-		mr.setIdMolde(idMolde);
-		mr.setTipoRegistro(TipoRegistroMolde.INGRESO);
-		return this.repository.save(mr);
-	}
-
-	@Override
-	public void removeByMolde(Long idMolde) {
-		this.repository.deleteByIdMolde(idMolde);
-		
-	}*/
+	 * @Override public MoldeRegistro registrarIngreso(String comentarios, Long
+	 * idMolde) { MoldeRegistro mr = new MoldeRegistro();
+	 * mr.setComentarios(comentarios); mr.setFecha(DateUtils.getFechaYHoraActual());
+	 * mr.setIdMolde(idMolde); mr.setTipoRegistro(TipoRegistroMolde.INGRESO); return
+	 * this.repository.save(mr); }
+	 * 
+	 * @Override public void removeByMolde(Long idMolde) {
+	 * this.repository.deleteByIdMolde(idMolde);
+	 * 
+	 * }
+	 */
 
 }

@@ -232,6 +232,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			mp.setNombreArchivo(moldePlanoDTO.getNombreArchivo());
 			mp.setArchivo(moldePlanoDTO.getArchivo());
 			mp.setFecha(DateUtils.getFechaYHoraActual());
+			mp.setDescripcion(moldePlanoDTO.getDescripcion());
 			mp.setVersion(1);
 			
 			MoldePlano nmp = this.moldePlanoService.addMoldePlano(mp);
@@ -269,6 +270,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			mf.setNombreArchivo(moldeFotoDTO.getNombreArchivo());
 			mf.setArchivo(moldeFotoDTO.getArchivo());
 			mf.setFecha(DateUtils.getFechaYHoraActual());
+			mf.setDescripcion(moldeFotoDTO.getDescripcion());
 			mf.setVersion(1);
 			
 			MoldeFoto nmf = this.moldeFotoService.addMoldeFoto(mf);
