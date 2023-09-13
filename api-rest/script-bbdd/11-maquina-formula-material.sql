@@ -28,12 +28,17 @@ CREATE SEQUENCE public.material_seq
 	CACHE 1
 	NO CYCLE;
 
-CREATE TABLE public.formula (
-	id_formula varchar NOT NULL,
-	nombre varchar NOT NULL,
-	id_material int8 NOT NULL,
-	CONSTRAINT formula_pk PRIMARY KEY (id_formula),
-	CONSTRAINT formula_fk FOREIGN KEY (id_material) REFERENCES public.material(id_material)
+CREATE TABLE public.formula
+(
+    id_formula integer NOT NULL,
+    nombre character varying NOT NULL,
+    id_material integer NOT NULL,
+    CONSTRAINT pk_formula PRIMARY KEY (id_formula),
+    CONSTRAINT formula_material FOREIGN KEY (id_material)
+        REFERENCES public.material (id_material) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
 );
 
 CREATE SEQUENCE public.formula_seq
