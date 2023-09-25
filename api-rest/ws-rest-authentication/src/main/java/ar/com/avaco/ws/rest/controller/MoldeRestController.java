@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoDTO;
@@ -27,7 +28,7 @@ import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
-public class MoldesRestController extends AbstractDTORestController<MoldeDTO, Long, MoldeEPService> {
+public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Long, MoldeEPService> {
 
 	@Resource(name = "moldeEPService")
 	public void setService(MoldeEPService moldeEPService) {
@@ -191,7 +192,25 @@ public class MoldesRestController extends AbstractDTORestController<MoldeDTO, Lo
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(value = "/molde/clientes/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> getMoldeClientes(@PathVariable("idMolde") Long idMolde) throws Exception {
+		List<MoldeClienteDTO> clienteMoldeDTOs = this.service.getMoldeClientes(idMolde);
+		JSONResponse response = new JSONResponse();
+		response.setData(clienteMoldeDTOs);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/molde/clientes/{idMolde}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> updateMoldeClientes(@PathVariable("idMolde") Long idMolde,
+			@RequestBody List<MoldeClienteDTO> moldeClientesListadoDTOs) throws Exception {
+		List<MoldeClienteDTO> result = this.service.updateMoldeClientes(idMolde, moldeClientesListadoDTOs);
+		JSONResponse response = new JSONResponse();
+		response.setData(result);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
 	
 	
 }

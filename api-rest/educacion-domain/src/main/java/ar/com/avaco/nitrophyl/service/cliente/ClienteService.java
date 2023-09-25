@@ -8,16 +8,16 @@ import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Contacto;
 
-
 public interface ClienteService extends NJService<Long, Cliente> {
 
 	Cliente getCliente(Long id);
-	
+
 	List<Contacto> getContactosByCliente(Long idCliente);
 
 	Contacto getContacto(Long idContactoCliente);
 
-	Contacto addContactoCliente(Long idCliente, Contacto contactoToAdd) throws ErrorValidationException, BusinessException;
+	Contacto addContactoCliente(Long idCliente, Contacto contactoToAdd)
+			throws ErrorValidationException, BusinessException;
 
 	Contacto updateContactoCliente(Contacto contactoToUpdate) throws ErrorValidationException, BusinessException;
 
@@ -25,22 +25,26 @@ public interface ClienteService extends NJService<Long, Cliente> {
 
 	Cliente updateCliente(Cliente clienteToUpdate) throws ErrorValidationException, BusinessException;
 
-	
+	List<Cliente> getByIds(List<Long> collect);
 
-	/*Cliente getClientePorUsername(String username);
-
-	Cliente registrarClientePersona(Cliente cliente) throws ErrorValidationException, BusinessException;
-
-	void validaContactoCliente(Contacto contacto) throws ErrorValidationException;
-
-	Cliente getClienteCompleto(Long id);
-
-	List<Cliente> listClientesListado();
-
-	void resetPassword(Long id);
-	
-	void updatePassword(Cliente user, String password,String newPassword);
-
-	Cliente getClientePorMail(String username);*/
+	/*
+	 * Cliente getClientePorUsername(String username);
+	 * 
+	 * Cliente registrarClientePersona(Cliente cliente) throws
+	 * ErrorValidationException, BusinessException;
+	 * 
+	 * void validaContactoCliente(Contacto contacto) throws
+	 * ErrorValidationException;
+	 * 
+	 * Cliente getClienteCompleto(Long id);
+	 * 
+	 * List<Cliente> listClientesListado();
+	 * 
+	 * void resetPassword(Long id);
+	 * 
+	 * void updatePassword(Cliente user, String password,String newPassword);
+	 * 
+	 * Cliente getClientePorMail(String username);
+	 */
 
 }

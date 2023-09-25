@@ -167,6 +167,11 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 	void setClienteRepository(ClienteRepository clienteRepository) {
 		this.repository = clienteRepository;
 	}
+
+	@Override
+	public List<Cliente> getByIds(List<Long> ids) {
+		return this.repository.findByIdIn(ids);
+	}
 	
 	/*
 	@Override

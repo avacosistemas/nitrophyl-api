@@ -10,7 +10,6 @@ import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeRepository;
 
-@Transactional
 @Service("moldeService")
 public class MoldeServiceImpl extends NJBaseService<Long, Molde, MoldeRepository>
 		implements MoldeService {

@@ -1,16 +1,29 @@
 package ar.com.avaco.nitrophyl.domain.entities.moldes;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 
 @Entity
 @Table(name = "MOLDES")
@@ -43,6 +56,11 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "MOLDE_CLIENTE", joinColumns = @JoinColumn(name = "ID_MOLDE", referencedColumnName = "ID_MOLDE"), inverseJoinColumns = @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE"))
+	@Fetch(FetchMode.SELECT)
+	private Set<Cliente> clientes = new HashSet<>();
 
 	public Molde() {
 		super();
@@ -102,6 +120,14 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Set<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(Set<Cliente> clientes) {
+		this.clientes = clientes;
 	}
 
 }

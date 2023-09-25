@@ -1,11 +1,15 @@
 package ar.com.avaco.nitrophyl.repository.cliente;
 
+import java.util.List;
+
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 
 public interface ClienteRepository extends NJRepository<Long, Cliente>, ClienteRepositoryCustom {
 
 	Cliente findByRazonSocialEqualsIgnoreCase(String razonSocial);
+
+	List<Cliente> findByIdIn(List<Long> ids);
 	
 	//List<Contacto> findByIdMolde(Long idMolde);
 	

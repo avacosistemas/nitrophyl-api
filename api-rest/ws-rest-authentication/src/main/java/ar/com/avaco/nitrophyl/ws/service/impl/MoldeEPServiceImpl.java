@@ -2,13 +2,16 @@ package ar.com.avaco.nitrophyl.ws.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
+import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoBoca;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
@@ -18,6 +21,7 @@ import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeFoto;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeRegistro;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoRegistroMolde;
+import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeDimensionService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeFotoService;
@@ -25,6 +29,7 @@ import ar.com.avaco.nitrophyl.service.molde.MoldePlanoService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeRegistroService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoDTO;
@@ -37,25 +42,29 @@ import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
+@Transactional
 @Service("moldeEPService")
 public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde, MoldeService>
 		implements MoldeEPService {
 
 	@Resource(name = "moldeDimensionService")
 	private MoldeDimensionService moldeDimensionService;
-	
+
 	@Resource(name = "moldeBocaService")
 	private MoldeBocaService moldeBocaService;
-	
+
 	@Resource(name = "moldeRegistroService")
 	private MoldeRegistroService moldeRegistroService;
-	
+
 	@Resource(name = "moldePlanoService")
 	private MoldePlanoService moldePlanoService;
-	
+
 	@Resource(name = "moldeFotoService")
 	private MoldeFotoService moldeFotoService;
-	
+
+	@Resource(name = "clienteService")
+	private ClienteService clienteService;
+
 	@Override
 	protected Molde convertToEntity(MoldeDTO dto) {
 		Molde molde = new Molde();
@@ -107,34 +116,34 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			return returnedList;
 		}
 		return null;
-		
+
 	}
 
 	@Override
 	public List<MoldeBocaListadoDTO> getMoldesBoca(Long idMolde) {
-		List<MoldeBoca> listado=moldeBocaService.getByMolde(idMolde);
+		List<MoldeBoca> listado = moldeBocaService.getByMolde(idMolde);
 		if (listado != null) {
-			List<MoldeBocaListadoDTO> returnedListado=new ArrayList<MoldeBocaListadoDTO>();	
-			for (MoldeBoca moldeBoca: listado) {
+			List<MoldeBocaListadoDTO> returnedListado = new ArrayList<MoldeBocaListadoDTO>();
+			for (MoldeBoca moldeBoca : listado) {
 				MoldeBocaListadoDTO moldeBocaListadoDTO = new MoldeBocaListadoDTO();
 				moldeBocaListadoDTO.setEstado(moldeBoca.getEstado().toString());
 				moldeBocaListadoDTO.setNroBoca(moldeBoca.getNroBoca());
 				moldeBocaListadoDTO.setDescripcion(moldeBoca.getDescripcion());
-				returnedListado.add(moldeBocaListadoDTO);								
+				returnedListado.add(moldeBocaListadoDTO);
 			}
 			return returnedListado;
-		}		
+		}
 		return null;
 	}
 
 	@Override
 	public List<MoldeBocaListadoDTO> updateMoldesBoca(Long idMolde, List<MoldeBocaListadoDTO> moldeBocaListadoDTO) {
 		if (moldeBocaListadoDTO != null) {
-			List<MoldeBoca> listado=new ArrayList<MoldeBoca>();
-			
+			List<MoldeBoca> listado = new ArrayList<MoldeBoca>();
+
 			Molde molde = service.get(idMolde);
-			
-			for (MoldeBocaListadoDTO dto: moldeBocaListadoDTO) {
+
+			for (MoldeBocaListadoDTO dto : moldeBocaListadoDTO) {
 				MoldeBoca moldeBoca = new MoldeBoca();
 				moldeBoca.setEstado(EstadoBoca.valueOf(dto.getEstado()));
 				moldeBoca.setNroBoca(dto.getNroBoca());
@@ -142,31 +151,31 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 				moldeBoca.setDescripcion(dto.getDescripcion());
 				listado.add(moldeBoca);
 			}
-			
+
 			moldeBocaService.removeByMolde(idMolde);
 			moldeBocaService.save(listado);
-			
+
 			molde.setBocas(listado.size());
 			service.save(molde);
-			
+
 			return moldeBocaListadoDTO;
-		}		
+		}
 		return null;
 	}
 
 	@Override
-	public List<MoldeDimensionListadoDTO> getMoldesDimension(Long idMolde) {			
-		List<MoldeDimension> listado=moldeDimensionService.getByMolde(idMolde);
+	public List<MoldeDimensionListadoDTO> getMoldesDimension(Long idMolde) {
+		List<MoldeDimension> listado = moldeDimensionService.getByMolde(idMolde);
 		if (listado != null) {
-			List<MoldeDimensionListadoDTO> returnedListado=new ArrayList<MoldeDimensionListadoDTO>();	
-			for (MoldeDimension moldeDimension: listado) {
+			List<MoldeDimensionListadoDTO> returnedListado = new ArrayList<MoldeDimensionListadoDTO>();
+			for (MoldeDimension moldeDimension : listado) {
 				MoldeDimensionListadoDTO dto = new MoldeDimensionListadoDTO();
 				dto.setTipoDimension(moldeDimension.getTipodimension());
 				dto.setValor(moldeDimension.getValordimension());
-				returnedListado.add(dto);								
+				returnedListado.add(dto);
 			}
 			return returnedListado;
-		}		
+		}
 		return null;
 	}
 
@@ -175,22 +184,21 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			List<MoldeDimensionListadoDTO> moldeDimensionListadoDTOs) {
 
 		if (moldeDimensionListadoDTOs != null) {
-			List<MoldeDimension> listado=new ArrayList<MoldeDimension>();
-			
+			List<MoldeDimension> listado = new ArrayList<MoldeDimension>();
+
 			moldeDimensionService.removeByMolde(idMolde);
-			
- 			for (MoldeDimensionListadoDTO dto: moldeDimensionListadoDTOs) {
+
+			for (MoldeDimensionListadoDTO dto : moldeDimensionListadoDTOs) {
 				MoldeDimension moldeDimension = new MoldeDimension();
 				moldeDimension.setIdMolde(idMolde);
 				moldeDimension.setTipodimension(dto.getTipoDimension());
 				moldeDimension.setValordimension(dto.getValor());
 				listado.add(moldeDimension);
 			}
-			
-			
+
 			this.moldeDimensionService.save(listado);
 			return moldeDimensionListadoDTOs;
-		}		
+		}
 		return null;
 	}
 
@@ -204,17 +212,19 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 
 	@Override
 	public MoldeRegistroDTO saveMoldeRegistro(MoldeRegistroDTO moldeRegistroDTO) {
-		
+
 		MoldeRegistro mr = moldeRegistroService.getUltimoRegistro(moldeRegistroDTO.getIdMolde());
-		MoldeRegistro nmr; 
+		MoldeRegistro nmr;
 		if (mr == null || (mr != null && mr.getTipoRegistro().equals(TipoRegistroMolde.EGRESO))) {
-			nmr = moldeRegistroService.registrarIngreso(moldeRegistroDTO.getComentarios(), moldeRegistroDTO.getIdMolde());	
+			nmr = moldeRegistroService.registrarIngreso(moldeRegistroDTO.getComentarios(),
+					moldeRegistroDTO.getIdMolde());
 		} else {
-			nmr = moldeRegistroService.registrarEgreso(moldeRegistroDTO.getComentarios(), moldeRegistroDTO.getIdMolde());
+			nmr = moldeRegistroService.registrarEgreso(moldeRegistroDTO.getComentarios(),
+					moldeRegistroDTO.getIdMolde());
 		}
 		return new MoldeRegistroDTO(nmr);
 	}
-	
+
 	@Override
 	public List<MoldeFotoListadoDTO> getMoldesFoto(Long idMolde) {
 		List<MoldeFoto> list = moldeFotoService.listByMoldeId(idMolde);
@@ -222,10 +232,10 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		list.forEach(mp -> ret.add(new MoldeFotoListadoDTO(mp)));
 		return ret;
 	}
-	
+
 	@Override
 	public MoldePlanoDTO addMoldePlano(MoldePlanoDTO moldePlanoDTO) throws ErrorValidationException, BusinessException {
-		
+
 		if (moldePlanoDTO != null) {
 			MoldePlano mp = new MoldePlano();
 			mp.setIdMolde(moldePlanoDTO.getIdMolde());
@@ -234,22 +244,22 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			mp.setFecha(DateUtils.getFechaYHoraActual());
 			mp.setDescripcion(moldePlanoDTO.getDescripcion());
 			mp.setVersion(1);
-			
+
 			MoldePlano nmp = this.moldePlanoService.addMoldePlano(mp);
 			return new MoldePlanoDTO(nmp);
-		}		
+		}
 		return null;
 	}
-	
+
 	@Override
 	public MoldePlanoDTO downloadMoldePlano(Long idMoldePlano) {
 		MoldePlano moldePlano = moldePlanoService.get(idMoldePlano);
-		
+
 		MoldePlanoDTO moldePlanoDTO = new MoldePlanoDTO();
 		moldePlanoDTO.setIdMolde(idMoldePlano);
 		moldePlanoDTO.setNombreArchivo(moldePlano.getNombreArchivo());
 		moldePlanoDTO.setArchivo(moldePlano.getArchivo());
-		
+
 		return moldePlanoDTO;
 	}
 
@@ -260,10 +270,10 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		list.forEach(mp -> ret.add(new MoldePlanoListadoDTO(mp)));
 		return ret;
 	}
-	
+
 	@Override
 	public MoldeFotoDTO addMoldeFoto(MoldeFotoDTO moldeFotoDTO) throws ErrorValidationException, BusinessException {
-		
+
 		if (moldeFotoDTO != null) {
 			MoldeFoto mf = new MoldeFoto();
 			mf.setIdMolde(moldeFotoDTO.getIdMolde());
@@ -272,24 +282,45 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			mf.setFecha(DateUtils.getFechaYHoraActual());
 			mf.setDescripcion(moldeFotoDTO.getDescripcion());
 			mf.setVersion(1);
-			
+
 			MoldeFoto nmf = this.moldeFotoService.addMoldeFoto(mf);
 			return new MoldeFotoDTO(nmf);
-		}		
+		}
 		return null;
 	}
-	
+
 	@Override
 	public MoldeFotoDTO downloadMoldeFoto(Long idMoldeFoto) {
 		MoldeFoto moldeFoto = moldeFotoService.get(idMoldeFoto);
-		
+
 		MoldeFotoDTO moldeFotoDTO = new MoldeFotoDTO();
 		moldeFotoDTO.setIdMolde(idMoldeFoto);
 		moldeFotoDTO.setNombreArchivo(moldeFoto.getNombreArchivo());
 		moldeFotoDTO.setArchivo(moldeFoto.getArchivo());
-		
+
 		return moldeFotoDTO;
 	}
-	
-	
+
+	@Override
+	public List<MoldeClienteDTO> getMoldeClientes(Long idMolde) {
+		Molde m = this.service.get(idMolde);
+		List<MoldeClienteDTO> clientes = new ArrayList<>();
+		m.getClientes().forEach(x -> {
+			clientes.add(new MoldeClienteDTO(x, m));
+		});
+		return clientes;
+	}
+
+	@Override
+	public List<MoldeClienteDTO> updateMoldeClientes(Long idMolde, List<MoldeClienteDTO> moldeClientesListadoDTOs) {
+		Molde m = this.service.get(idMolde);
+		List<Cliente> clientes = this.clienteService.getByIds(
+				moldeClientesListadoDTOs.stream().map(MoldeClienteDTO::getIdCliente).collect(Collectors.toList()));
+
+		m.getClientes().clear();
+		m.getClientes().addAll(clientes);
+		this.service.update(m);
+		return getMoldeClientes(idMolde);
+	}
+
 }

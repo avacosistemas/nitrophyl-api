@@ -6,6 +6,7 @@ import java.util.List;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.MoldeClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeFotoDTO;
@@ -46,5 +47,9 @@ public interface MoldeEPService extends CRUDEPService<Long, MoldeDTO> {
 	MoldePlanoDTO downloadMoldePlano(Long idMoldePlano);
 
 	MoldeFotoDTO downloadMoldeFoto(Long idMoldeFoto);
+
+	List<MoldeClienteDTO> getMoldeClientes(Long idMolde);
+
+	List<MoldeClienteDTO> updateMoldeClientes(Long idMolde, List<MoldeClienteDTO> moldeClientesListadoDTOs);
 
 }
