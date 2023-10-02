@@ -34,6 +34,9 @@ public class Formula extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
+	@Column(name = "NORMA")
+	private String norma;
+
 	@Column(name = "VERSION")
 	private Integer version;
 
@@ -82,6 +85,14 @@ public class Formula extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
+	}
+
+	public String getNorma() {
+		return norma;
+	}
+
+	public void setNorma(String norma) {
+		this.norma = norma;
 	}
 
 }

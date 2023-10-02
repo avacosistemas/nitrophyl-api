@@ -38,6 +38,7 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		Material material = materialService.get(dto.getIdMaterial());
 		formula.setMaterial(material);
 		formula.setNombre(dto.getNombre());
+		formula.setNorma(dto.getNorma());
 		return formula;
 	}
 
@@ -50,6 +51,7 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		dto.setNombre(entity.getNombre());
 		dto.setVersion(entity.getVersion());
 		dto.setFecha(DateUtils.toString(entity.getFecha().getTime()));
+		dto.setNorma(entity.getNorma());
 		return dto;
 	}
 	

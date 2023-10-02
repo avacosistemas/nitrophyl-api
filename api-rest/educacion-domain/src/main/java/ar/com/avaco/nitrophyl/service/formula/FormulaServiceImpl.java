@@ -15,7 +15,6 @@ import ar.com.avaco.nitrophyl.repository.material.FormulaRepository;
 @Service("formulaService")
 public class FormulaServiceImpl extends NJBaseService<Long, Formula, FormulaRepository> implements FormulaService {
 
-	
 	@Override
 	public Formula save(Formula entity) {
 		entity.setId(null);
@@ -32,7 +31,7 @@ public class FormulaServiceImpl extends NJBaseService<Long, Formula, FormulaRepo
 		entity.setFecha(Calendar.getInstance());
 		return super.save(entity);
 	}
-	
+
 	@Resource(name = "formulaRepository")
 	public void setFormulaRepository(FormulaRepository formulaRepository) {
 		this.repository = formulaRepository;

@@ -10,6 +10,15 @@ public class FormulaDTO extends DTOEntity<Long> {
 	private String material;
 	private Integer version;
 	private String fecha;
+	private String norma;
+
+	public String getNorma() {
+		return norma;
+	}
+
+	public void setNorma(String norma) {
+		this.norma = norma;
+	}
 
 	public Integer getVersion() {
 		return version;
