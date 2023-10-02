@@ -6,6 +6,7 @@ public class ClienteDTO extends DTOEntity<Long> {
 
 	private Long id;
 	private String razonSocial;
+	private String nombre;
 	private String domicilio;
 	private String codigoPostal;
 	private String localidad;
@@ -105,6 +106,14 @@ public class ClienteDTO extends DTOEntity<Long> {
 
 	public void setObservacionesEntrega(String observacionesEntrega) {
 		this.observacionesEntrega = observacionesEntrega;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 }

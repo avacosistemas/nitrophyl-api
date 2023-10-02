@@ -39,6 +39,9 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "RAZON_SOCIAL", nullable = false)
 	private String razonSocial;
 
+	@Column(name = "NOMBRE", nullable = false)
+	private String nombre;
+
 	/**
 	 * Contacto con el cliente.
 	 * 
@@ -206,6 +209,12 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.observacionesEntrega = observacionesEntrega;
 	}
 
-	
-	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 }

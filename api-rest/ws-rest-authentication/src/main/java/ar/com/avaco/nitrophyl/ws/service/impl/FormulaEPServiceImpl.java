@@ -4,12 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Material;
 import ar.com.avaco.nitrophyl.service.formula.FormulaService;
 import ar.com.avaco.nitrophyl.service.formula.MaterialService;
 import ar.com.avaco.nitrophyl.ws.dto.FormulaDTO;
 import ar.com.avaco.nitrophyl.ws.service.FormulaEPService;
+import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Service("formulaEPService")
@@ -46,7 +48,16 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		dto.setIdMaterial(entity.getMaterial().getId());
 		dto.setMaterial(entity.getMaterial().getNombre());
 		dto.setNombre(entity.getNombre());
+		dto.setVersion(entity.getVersion());
+		dto.setFecha(DateUtils.toString(entity.getFecha().getTime()));
 		return dto;
+	}
+	
+	@Override
+	public FormulaDTO clone(FormulaDTO dto) throws BusinessException {
+		Formula entity = convertToEntity(dto);
+		Formula clone = this.service.clone(entity);
+		return convertToDto(clone);
 	}
 
 }

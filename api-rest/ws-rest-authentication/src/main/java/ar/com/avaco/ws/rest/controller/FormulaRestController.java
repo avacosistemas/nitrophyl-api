@@ -51,7 +51,7 @@ public class FormulaRestController extends AbstractDTORestController<FormulaDTO,
 	public ResponseEntity<JSONResponse> update(@PathVariable("idFormula") Long idFormula,
 			@RequestBody FormulaDTO formulaDTO) throws BusinessException {
 		formulaDTO.setId(idFormula);
-		FormulaDTO updated = this.service.update(formulaDTO);
+		FormulaDTO cloned = this.service.clone(formulaDTO);
 		JSONResponse response = new JSONResponse();
 		response.setData(updated);
 		response.setStatus(JSONResponse.OK);

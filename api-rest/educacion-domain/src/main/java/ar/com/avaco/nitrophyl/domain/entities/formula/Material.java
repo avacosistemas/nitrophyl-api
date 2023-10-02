@@ -29,6 +29,9 @@ public class Material extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
+	@Column(name = "CODIGO")
+	private String codigo;
+
 	public Long getId() {
 		return id;
 	}
@@ -43,6 +46,14 @@ public class Material extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 }

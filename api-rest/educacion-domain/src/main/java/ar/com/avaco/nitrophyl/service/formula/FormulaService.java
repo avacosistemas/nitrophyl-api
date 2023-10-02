@@ -5,5 +5,7 @@ import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 
 
 public interface FormulaService extends NJService<Long, Formula> {
+
+	Formula clone(Formula entity);
 	
 }

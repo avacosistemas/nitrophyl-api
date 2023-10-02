@@ -17,7 +17,7 @@ public class MoldeClienteDTO {
 		super();
 		this.idMolde = molde.getId();
 		this.idCliente = cliente.getId();
-		this.nombre = cliente.getRazonSocial();
+		this.nombre = cliente.getNombre();
 	}
 
 	public Long getIdMolde() {

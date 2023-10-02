@@ -9,6 +9,8 @@ public interface ClienteRepository extends NJRepository<Long, Cliente>, ClienteR
 
 	Cliente findByRazonSocialEqualsIgnoreCase(String razonSocial);
 
+	Cliente findByNombreEqualsIgnoreCase(String nombre);
+
 	List<Cliente> findByIdIn(List<Long> ids);
 	
 	//List<Contacto> findByIdMolde(Long idMolde);

@@ -6,6 +6,7 @@ public class MaterialDTO extends DTOEntity<Long> {
 
 	private Long id;
 	private String nombre;
+	private String codigo;
 
 	public Long getId() {
 		return id;
@@ -21,6 +22,14 @@ public class MaterialDTO extends DTOEntity<Long> {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 }

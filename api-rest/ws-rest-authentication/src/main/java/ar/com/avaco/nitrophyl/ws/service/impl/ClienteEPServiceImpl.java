@@ -104,6 +104,7 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 		if (entity != null) {
 			clienteDTO.setId(entity.getId());
 			clienteDTO.setRazonSocial(entity.getRazonSocial());
+			clienteDTO.setNombre(entity.getNombre());
 			clienteDTO.setDomicilio(entity.getDomicilio());
 			clienteDTO.setCodigoPostal(entity.getCodigoPostal());
 			clienteDTO.setLocalidad(entity.getLocalidad());
@@ -140,6 +141,7 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 		Cliente cliente = new Cliente();
 		cliente.setId(dto.getId());
 		cliente.setRazonSocial(dto.getRazonSocial());
+		cliente.setNombre(dto.getNombre());
 		cliente.setDomicilio(dto.getDomicilio());
 		cliente.setCodigoPostal(dto.getCodigoPostal());
 		cliente.setLocalidad(dto.getLocalidad());

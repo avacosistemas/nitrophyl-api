@@ -69,11 +69,16 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 	protected Molde convertToEntity(MoldeDTO dto) {
 		Molde molde = new Molde();
 		molde.setCodigo(dto.getCodigo());
+		molde.setPropio(dto.isPropio());
 		molde.setEstado(EstadoMolde.valueOf(dto.getEstado()));
 		molde.setId(dto.getId());
 		molde.setNombre(dto.getNombre());
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
+		if (!dto.isPropio()) {
+			Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
+			molde.setDuenio(duenio);
+		}
 		return molde;
 	}
 
@@ -82,10 +87,14 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		MoldeDTO moldeDto = new MoldeDTO();
 		moldeDto.setCodigo(entity.getCodigo());
 		moldeDto.setEstado(entity.getEstado().toString());
+		moldeDto.setPropio(entity.isPropio());
 		moldeDto.setId(entity.getId());
 		moldeDto.setNombre(entity.getNombre());
 		moldeDto.setObservaciones(entity.getObservaciones());
 		moldeDto.setUbicacion(entity.getUbicacion());
+		if (!entity.isPropio()) {
+			moldeDto.setClienteDuenio(entity.getDuenio().getNombre());
+		}
 		return moldeDto;
 	}
 
@@ -212,7 +221,6 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 
 	@Override
 	public MoldeRegistroDTO saveMoldeRegistro(MoldeRegistroDTO moldeRegistroDTO) {
-
 		MoldeRegistro mr = moldeRegistroService.getUltimoRegistro(moldeRegistroDTO.getIdMolde());
 		MoldeRegistro nmr;
 		if (mr == null || (mr != null && mr.getTipoRegistro().equals(TipoRegistroMolde.EGRESO))) {

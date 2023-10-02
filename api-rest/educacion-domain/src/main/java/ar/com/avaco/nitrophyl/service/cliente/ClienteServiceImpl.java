@@ -114,6 +114,18 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 				errores.put("razonSocial", "La Razon Social no esta disponible. Intente otra diferente.");
 			}
 		}
+
+		if (StringUtils.isBlank(cliente.getNombre())) {
+			errores.put("nombre", "El campo Nombre es requerido.");
+		} else {
+			
+			Cliente cliByNombre = getRepository().findByNombreEqualsIgnoreCase(cliente.getNombre());
+			
+			if(cliByNombre!=null && cliente.getId()==null || 
+					cliByNombre!=null && cliente.getId()!=null && !cliente.getId().equals(cliByNombre.getId())) {
+				errores.put("nombre", "El nombre no esta disponible. Intente otro diferente.");
+			}
+		}
 		
 		if (!errores.isEmpty()) {
 			logger.error("Se encontraron los siguientes errores");

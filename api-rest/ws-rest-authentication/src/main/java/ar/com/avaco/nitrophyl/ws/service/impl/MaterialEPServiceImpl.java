@@ -25,6 +25,7 @@ public class MaterialEPServiceImpl extends CRUDEPBaseService<Long, MaterialDTO, 
 		Material material = new Material();
 		material.setId(dto.getId());
 		material.setNombre(dto.getNombre());
+		material.setCodigo(dto.getCodigo());
 		return material;
 	}
 
@@ -33,6 +34,7 @@ public class MaterialEPServiceImpl extends CRUDEPBaseService<Long, MaterialDTO, 
 		MaterialDTO dto = new MaterialDTO();
 		dto.setId(entity.getId());
 		dto.setNombre(entity.getNombre());
+		dto.setCodigo(entity.getCodigo());
 		return dto;
 	}
 

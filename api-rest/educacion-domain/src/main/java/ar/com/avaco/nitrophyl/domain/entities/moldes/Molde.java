@@ -3,7 +3,6 @@ package ar.com.avaco.nitrophyl.domain.entities.moldes;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,6 +16,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -56,6 +56,13 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
+
+	@Column(name = "PROPIO")
+	private boolean propio;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@JoinColumn(name = "ID_CLIENTE_DUENIO", nullable = true)
+	private Cliente duenio;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "MOLDE_CLIENTE", joinColumns = @JoinColumn(name = "ID_MOLDE", referencedColumnName = "ID_MOLDE"), inverseJoinColumns = @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE"))
@@ -128,6 +135,22 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setClientes(Set<Cliente> clientes) {
 		this.clientes = clientes;
+	}
+
+	public boolean isPropio() {
+		return propio;
+	}
+
+	public void setPropio(boolean propio) {
+		this.propio = propio;
+	}
+
+	public Cliente getDuenio() {
+		return duenio;
+	}
+
+	public void setDuenio(Cliente duenio) {
+		this.duenio = duenio;
 	}
 
 }

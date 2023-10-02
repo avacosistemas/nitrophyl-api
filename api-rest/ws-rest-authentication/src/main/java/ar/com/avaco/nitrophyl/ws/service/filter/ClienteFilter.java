@@ -10,28 +10,34 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoPieza;
 
 public class ClienteFilter extends AbstractFilter {
 
+	private String nombre;
+
 	private String razonSocial;
 
 	private String cuit;
 
-	
 	@Override
 	public List<FilterData> getFilterDatas() {
 		List<FilterData> list = new ArrayList<FilterData>();
 		if (razonSocial != null) {
-			list.add(new FilterData("razonSocial", razonSocial, FilterDataType.EQUALS));
+			list.add(new FilterData("razonSocial", razonSocial, FilterDataType.LIKE));
+		}
+		if (nombre != null) {
+			list.add(new FilterData("nombre", nombre, FilterDataType.LIKE));
 		}
 		if (cuit != null) {
-			list.add(new FilterData("cuit", cuit, FilterDataType.EQUALS));
+			list.add(new FilterData("cuit", cuit, FilterDataType.LIKE));
 		}
 		return list;
 	}
 
-	public ClienteFilter() {	}
-	
-	public ClienteFilter(String razonSocial, String cuit) {
+	public ClienteFilter() {
+	}
+
+	public ClienteFilter(String razonSocial, String cuit, String nombre) {
 		this.razonSocial = razonSocial;
 		this.cuit = cuit;
+		this.nombre = nombre;
 	}
 
 	public String getRazonSocial() {
@@ -48,6 +54,14 @@ public class ClienteFilter extends AbstractFilter {
 
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 }

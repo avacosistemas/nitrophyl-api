@@ -12,7 +12,10 @@ public class MoldeDTO extends DTOEntity<Long> {
 	private String estado;
 	private String nombre;
 	private String ubicacion;
+	private boolean propio;
 	private String observaciones;
+	private String clienteDuenio;
+	private Long idClienteDuenio;
 
 	public Long getId() {
 		return id;
@@ -60,6 +63,30 @@ public class MoldeDTO extends DTOEntity<Long> {
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+
+	public boolean isPropio() {
+		return propio;
+	}
+
+	public void setPropio(boolean propio) {
+		this.propio = propio;
+	}
+
+	public String getClienteDuenio() {
+		return clienteDuenio;
+	}
+
+	public void setClienteDuenio(String clienteDuenio) {
+		this.clienteDuenio = clienteDuenio;
+	}
+
+	public Long getIdClienteDuenio() {
+		return idClienteDuenio;
+	}
+
+	public void setIdClienteDuenio(Long idClienteDuenio) {
+		this.idClienteDuenio = idClienteDuenio;
 	}
 
 }

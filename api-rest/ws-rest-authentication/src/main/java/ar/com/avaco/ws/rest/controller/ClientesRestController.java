@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.collect.Lists;
-
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Provincia;
 import ar.com.avaco.nitrophyl.ws.dto.ClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ComboDTO;
@@ -38,8 +36,11 @@ public class ClientesRestController extends AbstractDTORestController<ClienteDTO
 	/* EP Clientes */
 
 	@RequestMapping(value = "/clientes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> listClientes(@RequestParam(name = "razonSocial", required = false) String razonSocial, @RequestParam(name = "cuit", required = false) String cuit) throws Exception {
-		ClienteFilter filter = new ClienteFilter(razonSocial, cuit);
+	public ResponseEntity<JSONResponse> listClientes(
+			@RequestParam(name = "razonSocial", required = false) String razonSocial,
+			@RequestParam(name = "cuit", required = false) String cuit,
+			@RequestParam(name = "nombre", required = false) String nombre) throws Exception {
+		ClienteFilter filter = new ClienteFilter(razonSocial, cuit, nombre);
 		List<ClienteDTO> listFilter = super.service.listFilter(filter);
 		JSONResponse response = new JSONResponse();
 		response.setData(listFilter);
@@ -127,15 +128,16 @@ public class ClientesRestController extends AbstractDTORestController<ClienteDTO
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/provincias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> listProvincias() throws Exception {
 		List<ComboDTO> provincias = new ArrayList<ComboDTO>();
-		new ArrayList<Provincia>(EnumSet.allOf(Provincia.class)).forEach(x->provincias.add(new ComboDTO(x.getNombre(), x.name())));
+		new ArrayList<Provincia>(EnumSet.allOf(Provincia.class))
+				.forEach(x -> provincias.add(new ComboDTO(x.getNombre(), x.name())));
 		JSONResponse response = new JSONResponse();
 		response.setData(provincias);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 }

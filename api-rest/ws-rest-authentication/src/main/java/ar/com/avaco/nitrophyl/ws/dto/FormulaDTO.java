@@ -8,6 +8,24 @@ public class FormulaDTO extends DTOEntity<Long> {
 	private String nombre;
 	private Long idMaterial;
 	private String material;
+	private Integer version;
+	private String fecha;
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
 
 	public Long getId() {
 		return id;

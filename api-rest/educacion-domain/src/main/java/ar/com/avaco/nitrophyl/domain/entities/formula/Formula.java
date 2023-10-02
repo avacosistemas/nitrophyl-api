@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.domain.entities.formula;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +34,12 @@ public class Formula extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
+	@Column(name = "VERSION")
+	private Integer version;
+
+	@Column(name = "FECHA")
+	private Calendar fecha;
+
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;
@@ -58,6 +66,22 @@ public class Formula extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public Calendar getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Calendar fecha) {
+		this.fecha = fecha;
 	}
 
 }
