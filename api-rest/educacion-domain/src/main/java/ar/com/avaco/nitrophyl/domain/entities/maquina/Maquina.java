@@ -1,5 +1,9 @@
 package ar.com.avaco.nitrophyl.domain.entities.maquina;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,8 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import ar.com.avaco.nitrophyl.domain.entities.cliente.Contacto;
 
 @Entity
 @Table(name = "MAQUINA")
@@ -35,6 +45,9 @@ public class Maquina extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Enumerated(EnumType.STRING)
 	private EstadoMaquina estado;
 
+	@OneToMany(targetEntity = MaquinaPrueba.class, mappedBy = "maquina", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MaquinaPrueba> pruebas = new HashSet<>();
+
 	public Long getId() {
 		return id;
 	}
@@ -57,6 +70,14 @@ public class Maquina extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setEstado(EstadoMaquina estado) {
 		this.estado = estado;
+	}
+
+	public Set<MaquinaPrueba> getPruebas() {
+		return pruebas;
+	}
+
+	public void setPruebas(Set<MaquinaPrueba> pruebas) {
+		this.pruebas = pruebas;
 	}
 
 }

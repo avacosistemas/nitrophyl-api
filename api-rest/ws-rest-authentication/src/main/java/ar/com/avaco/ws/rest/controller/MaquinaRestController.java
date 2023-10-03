@@ -67,4 +67,23 @@ public class MaquinaRestController extends AbstractDTORestController<MaquinaDTO,
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/maquina/prueba/{idMaquina}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> updatePruebas(@PathVariable("idMaquina") Long idMaquina,
+			@RequestBody List<String> moldeClientesListadoDTOs) throws Exception {
+		List<String> result = this.service.updateMaquinaPrueba(idMaquina, moldeClientesListadoDTOs);
+		JSONResponse response = new JSONResponse();
+		response.setData(result);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/maquina/prueba/{idMaquina}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> getPruebas(@PathVariable("idMaquina") Long idMaquina) throws Exception {
+		List<String> result = this.service.listPruebas(idMaquina);
+		JSONResponse response = new JSONResponse();
+		response.setData(result);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
 }

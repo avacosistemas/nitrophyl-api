@@ -324,7 +324,6 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		Molde m = this.service.get(idMolde);
 		List<Cliente> clientes = this.clienteService.getByIds(
 				moldeClientesListadoDTOs.stream().map(MoldeClienteDTO::getIdCliente).collect(Collectors.toList()));
-
 		m.getClientes().clear();
 		m.getClientes().addAll(clientes);
 		this.service.update(m);

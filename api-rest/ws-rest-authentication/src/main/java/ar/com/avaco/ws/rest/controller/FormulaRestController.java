@@ -53,7 +53,7 @@ public class FormulaRestController extends AbstractDTORestController<FormulaDTO,
 		formulaDTO.setId(idFormula);
 		FormulaDTO cloned = this.service.clone(formulaDTO);
 		JSONResponse response = new JSONResponse();
-		response.setData(updated);
+		response.setData(cloned);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}

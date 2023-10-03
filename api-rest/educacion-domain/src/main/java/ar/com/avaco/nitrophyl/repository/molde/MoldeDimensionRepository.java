@@ -9,6 +9,6 @@ public interface MoldeDimensionRepository extends NJRepository<Long, MoldeDimens
 
 	List<MoldeDimension> findByIdMolde(Long idMolde);
 	
-	void deleteByIdMolde(Long idMolde);
+	long deleteByIdMolde(Long idMolde);
 
 }
