@@ -94,6 +94,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		moldeDto.setUbicacion(entity.getUbicacion());
 		if (!entity.isPropio()) {
 			moldeDto.setClienteDuenio(entity.getDuenio().getNombre());
+			moldeDto.setIdClienteDuenio(entity.getDuenio().getId());
 		}
 		return moldeDto;
 	}

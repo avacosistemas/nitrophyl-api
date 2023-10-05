@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
-
 @Entity
 @Table(name = "MAQUINA_PRUEBA")
 @Inheritance(strategy = InheritanceType.JOINED)

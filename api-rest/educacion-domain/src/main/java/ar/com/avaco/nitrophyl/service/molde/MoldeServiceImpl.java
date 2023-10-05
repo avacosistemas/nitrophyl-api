@@ -12,7 +12,7 @@ import ar.com.avaco.nitrophyl.repository.molde.MoldeRepository;
 public class MoldeServiceImpl extends NJBaseService<Long, Molde, MoldeRepository> implements MoldeService {
 
 	@Resource(name = "moldeRepository")
-	void setClienteRepository(MoldeRepository moldeRepository) {
+	void setMoldeRepository(MoldeRepository moldeRepository) {
 		this.repository = moldeRepository;
 	}
 
